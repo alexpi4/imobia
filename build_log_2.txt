@@ -1,0 +1,3 @@
+﻿src/hooks/useCadastros.ts(21,21): error TS2352: Conversion of type 'GenericStringError[]' to type 'T[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'GenericStringError' is not comparable to type 'T'.
+    'T' could be instantiated with an arbitrary type which could be unrelated to 'GenericStringError'.

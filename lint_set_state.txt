@@ -1,0 +1,64 @@
+﻿
+    11 |         if (!profile) {
+  > 12 |             setAllowedMenus([]);
+       |             ^^^^^^^^^^^^^^^ Avoid 
+calling setState() directly within an effect
+    13 |             setLoading(false);
+    14 |             return;
+>   15 |         }  
+react-hooks/set-state-in-effect
+    35 |             if (criciuma) {
+  > 36 |                 
+setSelectedUnidadeId(criciuma.id);
+       |                 
+^^^^^^^^^^^^^^^^^^^^ Avoid calling 
+setState() directly within an effect
+    37 |                 
+hasAutoSelectedUnit.current = true;
+    38 |             }
+>   39 |         }                          
+                                            
+     react-hooks/set-state-in-effect
+    49 |         if (activePipelines.length 
+> 0 && !hasAutoSelectedPipeline.current && 
+selectedPipelineId === undefined) {
+  > 50 |             setSelectedPipelineId(a
+ctivePipelines[0].id);
+       |             ^^^^^^^^^^^^^^^^^^^^^ 
+Avoid calling setState() directly within an 
+effect
+    51 |             
+hasAutoSelectedPipeline.current = true;
+    52 |         }
+>   53 |     }, [activePipelines, 
+selectedPipelineId]);  
+react-hooks/set-state-in-effect
+    34 |             if (criciuma) {
+  > 35 |                 
+setSelectedUnidadeId(criciuma.id);
+       |                 
+^^^^^^^^^^^^^^^^^^^^ Avoid calling 
+setState() directly within an effect
+    36 |                 
+hasAutoSelectedUnit.current = true;
+    37 |             }
+>   38 |         }                          
+                                            
+react-hooks/set-state-in-effect
+    42 |         if (pipelines && 
+pipelines.length > 0 && 
+!hasAutoSelectedPipeline.current && 
+selectedPipelineId === undefined) {
+  > 43 |             
+setSelectedPipelineId(pipelines[0].id);
+       |             ^^^^^^^^^^^^^^^^^^^^^ 
+Avoid calling setState() directly within an 
+effect
+    44 |             
+hasAutoSelectedPipeline.current = true;
+    45 |         }
+>   46 |     }, [pipelines, 
+selectedPipelineId]);  
+react-hooks/set-state-in-effect
+
+

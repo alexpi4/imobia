@@ -1,0 +1,248 @@
+﻿
+> crm-system@0.0.0 lint
+> eslint .
+
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\automations\AutomationBuilder.tsx
+   31:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   68:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\leads\LeadDialog.tsx
+   61:20  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  109:28  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\leads\LeadDialog.tsx:109:28
+  107 |
+  108 |     // Watch for unidade changes to update selected unidade ID
+> 109 |     const watchedUnidade = form.watch('unidade');
+      |                            ^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  110 |
+  111 |     useEffect(() => {
+  112 |         if (watchedUnidade) {  react-hooks/incompatible-library
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\badge.tsx
+  36:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\button.tsx
+  55:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\form.tsx
+  168:5  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\input.tsx
+  4:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\sidebar.tsx
+  24:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\components\ui\textarea.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\contexts\AuthContext.tsx
+  95:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useCadastros.ts
+  22:25  error    Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  45:8   warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  58:25  error    Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  74:25  error    Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  90:25  error    Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useCidades.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useIntegracoes.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useIntencoes.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useLeads.ts
+  41:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useMenuPermissions.ts
+  12:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useMenuPermissions.ts:12:13
+  10 |     useEffect(() => {
+  11 |         if (!profile) {
+> 12 |             setAllowedMenus([]);
+     |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |             setLoading(false);
+  14 |             return;
+  15 |         }  react-hooks/set-state-in-effect
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useOrigens.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\usePipelineAutomations.ts
+  40:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useTimeDeVendas.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useTurnos.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useUnidades.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\hooks\useWebhooks.ts
+  37:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\lib\roleta.ts
+  98:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\AnaliseCLPage.tsx
+  58:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\Auth.tsx
+  37:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\LeadsPage.tsx
+  52:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\PerformancePage.tsx
+  37:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:56  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\PipelinePage.tsx
+   33:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\PipelinePage.tsx:33:17
+  31 |             const criciuma = unidades.find(u => u.nome === 'Crici├║ma');
+  32 |             if (criciuma) {
+> 33 |                 setSelectedUnidadeId(criciuma.id);
+     |                 ^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |             }
+  35 |         }
+  36 |     }, [unidades, selectedUnidadeId]);  react-hooks/set-state-in-effect
+   46:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\PipelinePage.tsx:46:13
+  44 |     useEffect(() => {
+  45 |         if (activePipelines.length > 0 && !selectedPipelineId) {
+> 46 |             setSelectedPipelineId(activePipelines[0].id);
+     |             ^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  47 |         }
+  48 |     }, [activePipelines, selectedPipelineId]);
+  49 |                 react-hooks/set-state-in-effect
+  106:29  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+  125:41  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\admin\WebhooksPage.tsx
+  49:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\cadastros\PipelineAutomationsPage.tsx
+  31:27  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\cadastros\PipelineAutomationsPage.tsx:31:27
+  29 |         if (unidades && !selectedUnidadeId) {
+  30 |             const criciuma = unidades.find(u => u.nome === 'Crici├║ma');
+> 31 |             if (criciuma) setSelectedUnidadeId(criciuma.id);
+     |                           ^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  32 |         }
+  33 |     }, [unidades, selectedUnidadeId]);
+  34 |  react-hooks/set-state-in-effect
+  37:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\cadastros\PipelineAutomationsPage.tsx:37:13
+  35 |     useEffect(() => {
+  36 |         if (pipelines && pipelines.length > 0 && !selectedPipelineId) {
+> 37 |             setSelectedPipelineId(pipelines[0].id);
+     |             ^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |         }
+  39 |     }, [pipelines, selectedPipelineId]);
+  40 |                                              react-hooks/set-state-in-effect
+  44:37  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\cadastros\PipelineFormPage.tsx
+  207:60  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+  269:75  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\cadastros\PipelineFormPage.tsx:269:75
+  267 |                                             <div
+  268 |                                                 className="w-10 h-10 rounded border"
+> 269 |                                                 style={{ backgroundColor: form.watch(`etapas.${index}.cor`) }}
+      |                                                                           ^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  270 |                                             />
+  271 |                                         </div>
+  272 |                                     </div>  react-hooks/incompatible-library
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\pages\operacional\PlanejamentoPlantaoPage.tsx
+   72:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  135:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  137:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\types\index.ts
+   95:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  169:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  170:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Alex\.gemini\antigravity\crm-system\src\types\operacional.ts
+  49:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 78 problems (75 errors, 3 warnings)
+
