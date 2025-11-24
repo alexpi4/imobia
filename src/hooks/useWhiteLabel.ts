@@ -28,11 +28,8 @@ export interface WhiteLabelSettings {
     updated_at: string;
 }
 
-import { useAuth } from '@/contexts/AuthContext';
-
 export function useWhiteLabel() {
     const queryClient = useQueryClient();
-    const { loading: authLoading } = useAuth();
 
     // Fetch white label settings
     const { data: settings, isLoading } = useQuery({
@@ -110,7 +107,7 @@ export function useWhiteLabel() {
             const filePath = `logos/${fileName}`;
 
             // Upload to Supabase Storage
-            const { data: uploadData, error: uploadError } = await supabase.storage
+            const { error: uploadError } = await supabase.storage
                 .from('white-label-assets')
                 .upload(filePath, file, {
                     cacheControl: '3600',
@@ -164,8 +161,8 @@ export function useWhiteLabel() {
 
             // Update settings
             await updateSettings.mutateAsync({
-                logo_url: null,
-                logo_metadata: null,
+                logo_url: undefined,
+                logo_metadata: undefined,
             });
         },
         onSuccess: () => {
