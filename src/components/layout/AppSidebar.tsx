@@ -32,7 +32,16 @@ import {
     Tag,
     CalendarDays,
     GitBranch,
-    Zap
+    Zap,
+    Package,
+    Layers,
+    CreditCard,
+    MessageSquare,
+    Bot,
+    Megaphone,
+    ShoppingCart,
+    MessageCircle,
+    Send
 } from 'lucide-react';
 import {
     Sidebar,
@@ -56,12 +65,17 @@ export function AppSidebar() {
 
     // State for collapsible submenus
     const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({
+        'crm-group': false,
         'gestao-escalas': false,
         'agendamento-visitas': false,
         'distribuicao-lead': false,
+        'cadastros-group': false,
         'integracoes-api': false,
         'seguranca-acessos': false,
-        'configuracoes-sistema': false
+        'configuracoes-sistema': false,
+        'chat-group': false,
+        'agentes-ia-group': false,
+        'multicanal-group': false
     });
 
     const toggleSubmenu = (key: string) => {
@@ -77,10 +91,20 @@ export function AppSidebar() {
         { title: "Performance", url: "/performance", icon: BarChart3, id: 'performance' }
     ];
 
-    const crmMenuItems = [
-        { title: "Pipeline", url: "/pipeline", icon: Kanban, id: 'pipeline' },
-        { title: "Leads", url: "/leads", icon: Users, id: 'leads' },
-        { title: "Funil de Vendas", url: "/funil-vendas", icon: TrendingUp, id: 'funil-vendas' }
+    const crmMenuStructure = [
+        {
+            key: 'crm-group',
+            title: "CRM",
+            icon: Users,
+            id: 'crm-group',
+            items: [
+                { title: "Pipeline", url: "/pipeline", icon: Kanban, id: 'pipeline' },
+                { title: "Leads", url: "/leads", icon: Users, id: 'leads' },
+                { title: "Funil de Vendas", url: "/funil-vendas", icon: TrendingUp, id: 'funil-vendas' },
+                { title: "Pipelines", url: "/cadastros/pipelines", icon: GitBranch, id: 'cadastros-pipelines' },
+                { title: "Automações", url: "/cadastros/automacoes", icon: Zap, id: 'cadastros-automacoes' },
+            ]
+        }
     ];
 
     const operationalMenuStructure = [
@@ -116,15 +140,21 @@ export function AppSidebar() {
         }
     ];
 
-    const cadastrosMenuItems = [
-        { title: "Cidades", url: "/cadastros/cidades", icon: MapPin, id: 'cadastros-cidades' },
-        { title: "Time de Vendas", url: "/cadastros/time-de-vendas", icon: Users, id: 'cadastros-time-vendas' },
-        { title: "Unidades", url: "/cadastros/unidades", icon: Building, id: 'cadastros-unidades' },
-        { title: "Intenções", url: "/cadastros/intencoes", icon: Target, id: 'cadastros-intencoes' },
-        { title: "Origens", url: "/cadastros/origens", icon: Share2, id: 'cadastros-origens' },
-        { title: "Turnos", url: "/cadastros/turnos", icon: Clock, id: 'cadastros-turnos' },
-        { title: "Pipelines", url: "/cadastros/pipelines", icon: GitBranch, id: 'cadastros-pipelines' },
-        { title: "Automações", url: "/cadastros/automacoes", icon: Zap, id: 'cadastros-automacoes' },
+    const cadastrosMenuStructure = [
+        {
+            key: 'cadastros-group',
+            title: "Cadastros",
+            icon: Building,
+            id: 'cadastros-group',
+            items: [
+                { title: "Cidades", url: "/cadastros/cidades", icon: MapPin, id: 'cadastros-cidades' },
+                { title: "Time de Vendas", url: "/cadastros/time-de-vendas", icon: Users, id: 'cadastros-time-vendas' },
+                { title: "Unidades", url: "/cadastros/unidades", icon: Building, id: 'cadastros-unidades' },
+                { title: "Intenções", url: "/cadastros/intencoes", icon: Target, id: 'cadastros-intencoes' },
+                { title: "Origens", url: "/cadastros/origens", icon: Share2, id: 'cadastros-origens' },
+                { title: "Turnos", url: "/cadastros/turnos", icon: Clock, id: 'cadastros-turnos' },
+            ]
+        }
     ];
 
 
@@ -159,9 +189,59 @@ export function AppSidebar() {
             items: [
                 { title: "Personalização", url: "/admin/personalizacao", icon: Palette, id: 'admin-personalizacao' },
                 { title: "White Label", url: "/admin/white-label", icon: Tag, id: 'admin-white-label' },
-                { title: "Notificações", url: "/admin/notificacoes", icon: Bell, id: 'admin-notificacoes' }
+                { title: "Notificações", url: "/admin/notificacoes", icon: Bell, id: 'admin-notificacoes' },
+                { title: "Planos", url: "/admin/plans", icon: Package, id: 'admin-plans' },
+                { title: "Módulos", url: "/admin/modules", icon: Layers, id: 'admin-modules' },
+                { title: "Assinatura", url: "/configuracao/assinatura", icon: CreditCard, id: 'config-subscription' }
             ]
         }
+    ];
+
+    const chatMenuStructure = [
+        {
+            key: 'chat-group',
+            title: "Chat",
+            icon: MessageSquare,
+            id: 'chat-group',
+            items: [
+                { title: "Chat Interno", url: "/chat/interno", icon: MessageSquare, id: 'chat-interno' },
+                { title: "Chat Corretores", url: "/chat/corretores", icon: Users, id: 'chat-corretores' }
+            ]
+        }
+    ];
+
+    const agentesMenuStructure = [
+        {
+            key: 'agentes-ia-group',
+            title: "Agentes IA",
+            icon: Bot,
+            id: 'agentes-ia-group',
+            items: [
+                { title: "Agente Atendimento", url: "/agentes/atendimento", icon: Bot, id: 'agente-atendimento' },
+                { title: "Agente Campanhas", url: "/agentes/campanhas", icon: Megaphone, id: 'agente-campanhas' },
+                { title: "Agente Vendas", url: "/agentes/vendas", icon: ShoppingCart, id: 'agente-vendas' }
+            ]
+        }
+    ];
+
+    const multicanalMenuStructure = [
+        {
+            key: 'multicanal-group',
+            title: "Multicanal",
+            icon: MessageCircle,
+            id: 'multicanal-group',
+            items: [
+                { title: "ChatWoot", url: "/multicanal/chatwoot", icon: MessageCircle, id: 'multicanal-chatwoot' },
+                { title: "ManyChat", url: "/multicanal/manychat", icon: Send, id: 'multicanal-manychat' }
+            ]
+        }
+    ];
+
+    const modulesMenuStructure = [
+        ...crmMenuStructure,
+        ...chatMenuStructure,
+        ...agentesMenuStructure,
+        ...multicanalMenuStructure
     ];
 
     return (
@@ -170,26 +250,6 @@ export function AppSidebar() {
                 <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
                 <SidebarMenu>
                     {mainMenuItems.map((item) => (
-                        hasAccess(item.id) && (
-                            <SidebarMenuItem key={item.url}>
-                                <NavLink to={item.url}>
-                                    {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive}>
-                                            <item.icon className="h-4 w-4" />
-                                            {!collapsed && <span>{item.title}</span>}
-                                        </SidebarMenuButton>
-                                    )}
-                                </NavLink>
-                            </SidebarMenuItem>
-                        )
-                    ))}
-                </SidebarMenu>
-            </SidebarGroup>
-
-            <SidebarGroup>
-                <SidebarGroupLabel>CRM</SidebarGroupLabel>
-                <SidebarMenu>
-                    {crmMenuItems.map((item) => (
                         hasAccess(item.id) && (
                             <SidebarMenuItem key={item.url}>
                                 <NavLink to={item.url}>
@@ -251,19 +311,87 @@ export function AppSidebar() {
             </SidebarGroup>
 
             <SidebarGroup>
+                <SidebarGroupLabel>Módulos</SidebarGroupLabel>
+                <SidebarMenu>
+                    {modulesMenuStructure.map((group) => (
+                        hasAccess(group.id) && (
+                            <SidebarMenuItem key={group.key}>
+                                <SidebarMenuButton
+                                    onClick={() => toggleSubmenu(group.key)}
+                                    className="justify-between"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <group.icon className="h-4 w-4" />
+                                        {!collapsed && <span>{group.title}</span>}
+                                    </div>
+                                    {!collapsed && (
+                                        openSubmenus[group.key] ?
+                                            <ChevronDown className="h-4 w-4" /> :
+                                            <ChevronRight className="h-4 w-4" />
+                                    )}
+                                </SidebarMenuButton>
+                                {!collapsed && openSubmenus[group.key] && (
+                                    <SidebarMenuSub>
+                                        {group.items.map((item) => (
+                                            hasAccess(item.id) && (
+                                                <SidebarMenuSubItem key={item.url}>
+                                                    <NavLink to={item.url}>
+                                                        {({ isActive }) => (
+                                                            <SidebarMenuSubButton isActive={isActive}>
+                                                                <item.icon className="h-4 w-4" />
+                                                                <span>{item.title}</span>
+                                                            </SidebarMenuSubButton>
+                                                        )}
+                                                    </NavLink>
+                                                </SidebarMenuSubItem>
+                                            )
+                                        ))}
+                                    </SidebarMenuSub>
+                                )}
+                            </SidebarMenuItem>
+                        )
+                    ))}
+                </SidebarMenu>
+            </SidebarGroup>
+
+            <SidebarGroup>
                 <SidebarGroupLabel>Cadastros</SidebarGroupLabel>
                 <SidebarMenu>
-                    {cadastrosMenuItems.map((item) => (
-                        hasAccess(item.id) && (
-                            <SidebarMenuItem key={item.url}>
-                                <NavLink to={item.url}>
-                                    {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive}>
-                                            <item.icon className="h-4 w-4" />
-                                            {!collapsed && <span>{item.title}</span>}
-                                        </SidebarMenuButton>
+                    {cadastrosMenuStructure.map((group) => (
+                        hasAccess(group.id) && (
+                            <SidebarMenuItem key={group.key}>
+                                <SidebarMenuButton
+                                    onClick={() => toggleSubmenu(group.key)}
+                                    className="justify-between"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <group.icon className="h-4 w-4" />
+                                        {!collapsed && <span>{group.title}</span>}
+                                    </div>
+                                    {!collapsed && (
+                                        openSubmenus[group.key] ?
+                                            <ChevronDown className="h-4 w-4" /> :
+                                            <ChevronRight className="h-4 w-4" />
                                     )}
-                                </NavLink>
+                                </SidebarMenuButton>
+                                {!collapsed && openSubmenus[group.key] && (
+                                    <SidebarMenuSub>
+                                        {group.items.map((item) => (
+                                            hasAccess(item.id) && (
+                                                <SidebarMenuSubItem key={item.url}>
+                                                    <NavLink to={item.url}>
+                                                        {({ isActive }) => (
+                                                            <SidebarMenuSubButton isActive={isActive}>
+                                                                <item.icon className="h-4 w-4" />
+                                                                <span>{item.title}</span>
+                                                            </SidebarMenuSubButton>
+                                                        )}
+                                                    </NavLink>
+                                                </SidebarMenuSubItem>
+                                            )
+                                        ))}
+                                    </SidebarMenuSub>
+                                )}
                             </SidebarMenuItem>
                         )
                     ))}

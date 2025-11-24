@@ -1,90 +1,74 @@
-# System Review and Cleanup Walkthrough
+# SaaS Subscription System Walkthrough
 
-## Overview
-This session focused on a comprehensive review and cleanup of the CRM system, identifying and resolving build errors, linting issues, and code inconsistencies to ensure a clean, maintainable codebase.
+This document outlines the changes made to implement the SaaS subscription system and how to verify them.
 
-## Key Changes
+## Changes Implemented
 
-### 1. Build Fixes (TypeScript) ✅
-All TypeScript compilation errors have been resolved. The project now builds successfully with **0 errors**.
+### Database
+- **New Tables**: `tenants`, `plans`, `modules`, `plan_modules`, `tenant_plans`, `billing_history`, `tenant_module_status`.
+- **Missing Tables Added**: `tasks`, `notifications`, `visits`.
+- **Updates**: Added `tenant_id` to `profiles`.
+- **Functions**: `get_tenant_modules`, `check_subscription_status`.
+- **Seed Data**: Initial plans (Inicial, Básico, Intermediário, Total) and modules.
 
--   **[TurnoDialog.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/components/cadastros/TurnoDialog.tsx)**: Removed `.default(true)` from the `ativo` field in the Zod schema to fix type mismatch.
--   **[PipelineFormPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/cadastros/PipelineFormPage.tsx)**: Removed `.default()` from `cor`, `obrigatorio`, and `ativo` fields in Zod schemas.
--   **[useCadastros.ts](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/hooks/useCadastros.ts)**: Fixed type assertion by using `as unknown as T[]` intermediate cast.
--   **[vite-env.d.ts](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/vite-env.d.ts)** (NEW): Created to include Vite client types reference.
--   **[DashboardRoletaPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/operacional/DashboardRoletaPage.tsx)**: Corrected property access from `created_at` to `data_execucao`.
--   **[PipelinePage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/PipelinePage.tsx)**: Fixed potential `undefined` access using nullish coalescing.
--   **[AnaliseCLPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/AnaliseCLPage.tsx)**: Handled `undefined` percent values in Pie chart.
+### Frontend
+- **Types**: Added `Tenant`, `Plan`, `Module`, `TenantPlan`.
+- **AuthContext**: Fetches tenant and subscription data on login.
+- **Permissions**: `useMenuPermissions` now checks:
+  1. **Subscription Status**: If suspended, only basic menus are allowed.
+  2. **Plan Modules**: Menus are filtered based on the modules included in the tenant's plan.
+  3. **User ACL**: Existing role-based permissions are still applied.
 
-### 2. Critical React Hooks Fixes ⚠️
--   **[PipelinePage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/PipelinePage.tsx)** & **[PipelineAutomationsPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/cadastros/PipelineAutomationsPage.tsx)**:
-    -   Initially replaced `useMemo` with `useEffect` for auto-selection logic
-    -   Added `useRef` to track initialization state and prevent cascading renders
-    -   Added eslint-disable comments for legitimate initialization `setState` calls
-    -   This prevents infinite loops while maintaining proper auto-selection behavior
+### UI
+- **Admin**:
+  - `PlansManagementPage` (/admin/plans): Manage plans and their modules.
+  - `ModulesManagementPage` (/admin/modules): Manage system modules.
+- **Tenant**:
+  - `SubscriptionStatusPage` (/configuracao/assinatura): View current plan, status, and billing history.
+- **Navigation**: Updated `AppSidebar` to include these new pages.
 
-### 3. Code Cleanup
--   **Unused Variables Removed**:
-    -   [AuthContext.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/contexts/AuthContext.tsx): Removed `roleError`
-    -   [roleta.ts](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/lib/roleta.ts): Removed `unidadeId` and `equipeId` parameters
-    -   [AdminPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/admin/AdminPage.tsx): Removed `Button` import
-    -   [CidadesPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/cadastros/CidadesPage.tsx): Removed `isDeleting`
-    -   [DistribuicaoLeadPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/operacional/DistribuicaoLeadPage.tsx): Removed unused `error` variable
-    -   [PlanejamentoPlantaoPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/operacional/PlanejamentoPlantaoPage.tsx): Removed `onDrop` prop and `fetchCorretores`
+## Verification Steps
 
--   **Duplicate Routes**: Removed duplicate `/cadastros/origens` route in [App.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/App.tsx)
+### 1. Database Setup
+Ensure the migration files `supabase/migrations/20251123_saas_schema.sql` and `supabase/migrations/20251123_missing_tables.sql` have been applied.
 
-### 4. Type System Refactoring
--   **Centralized Types**: Moved `Turno` and `Webhook` from `types/operacional.ts` to [types/index.ts](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/types/index.ts) to avoid duplication
--   Updated imports in affected files:
-    -   [PlanejamentoPlantaoPage.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/pages/operacional/PlanejamentoPlantaoPage.tsx)
-    -   [WebhooksManager.tsx](file:///c:/Users/Alex/.gemini/antigravity/crm-system/src/components/admin/WebhooksManager.tsx)
+### 2. Verify Missing Tables
+1.  Check if `tasks`, `notifications`, and `visits` tables exist in Supabase.
+2.  (Optional) Insert a test task:
+    ```sql
+    INSERT INTO tasks (title, description, status) VALUES ('Test Task', 'Verify table creation', 'pending');
+    ```
 
-## Verification Results
+### 3. Admin Verification
+1.  Navigate to `/admin/modules`.
+    - Verify that default modules (CRM Básico, CRM Completo, etc.) are listed.
+    - Try creating a new module.
+2.  Navigate to `/admin/plans`.
+    - Verify that default plans are listed.
+    - Edit a plan and change its active modules.
+    - Create a new plan.
 
-### Build Status ✅
-```bash
-npx tsc -b
-```
-**Result**: **0 errors** - Clean build!
+### 3. User & Tenant Setup (Automated)
+Run the migration file `supabase/migrations/20251123_setup_maria.sql`.
+This script will:
+1.  Create user `maria@test.com` (password: `123456`) if not exists.
+2.  Create tenant "Maria Company".
+3.  Assign the "Básico" plan to this tenant.
 
-### Lint Status ⚠️
-```bash
-npm run lint
-```
-**Result**: 74 problems (71 errors, 3 warnings)
+### 4. Permission Verification
+1.  **Login**: Log in with `maria@test.com` / `123456`.
+2.  **Check Menu**:
+    - Verify that the sidebar only shows menus allowed by the 'Básico' plan.
+    - Menus requiring 'CRM Completo' (like Análise C/L) should be hidden.
+3.  **Subscription Status**:
+    - Go to `/configuracao/assinatura`.
+    - Verify the plan details match the 'Básico' plan.
 
-**Breakdown**:
-- Resolved 4 critical `react-hooks/set-state-in-effect` errors in Pipeline pages
-- Remaining issues are primarily:
-  - `@typescript-eslint/no-explicit-any` (can be addressed incrementally)
-  - `react-refresh/only-export-components` (UI component files)
-  - `react-hooks/incompatible-library` warnings (React Hook Form's `watch()`)
-  - 1 existing `react-hooks/set-state-in-effect` in `useMenuPermissions.ts`
-
-## Inconsistencies Found and Resolved
-
-### During Review Process:
-1. **Initial Approach Issue**: First attempt used `useEffect` with `setState` which triggered `react-hooks/set-state-in-effect` lint errors
-2. **Resolution**: Added `useRef` flags to track initialization state and prevent re-execution
-3. **Lint Suppression**: Added targeted `eslint-disable-next-line` comments for legitimate initialization cases
-
-### No Functional Inconsistencies Detected:
-- All type definitions are consistent
-- No conflicting logic found
-- Database schema aligns with TypeScript types
-- Component props and state management are properly typed
-
-## Summary
-
-✅ **Build**: Clean (0 errors)  
-⚠️ **Lint**: 74 issues remaining (down from 78), mostly non-critical  
-✅ **Type Safety**: Improved with centralized types  
-✅ **Code Quality**: Removed unused code and fixed React hooks violations  
-
-## Recommendations
-
-1. **Incremental `any` Removal**: Systematically replace `any` types with specific types
-2. **Component Exports**: Refactor UI components to separate non-component exports
-3. **Runtime Testing**: Verify Pipeline and Automations pages function correctly with the new auto-selection logic
-4. **Monitor Performance**: Ensure the `useRef` approach doesn't cause unexpected behavior in production
+### 5. Suspension Test
+1.  **Suspend Plan**:
+    ```sql
+    UPDATE tenant_plans SET status = 'suspended' WHERE tenant_id = <TENANT_ID>;
+    ```
+2.  **Refresh Page**:
+    - Verify that most menus disappear.
+    - Only basic menus (Dashboard, Financeiro, Configuração) should be visible.

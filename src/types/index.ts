@@ -12,6 +12,48 @@ export interface Profile {
     total_atendimentos: number;
     role?: AppRole;
     unidade_id?: number;
+    tenant_id?: number;
+}
+
+export interface Tenant {
+    id: number;
+    name: string;
+    slug: string;
+    cnpj?: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Plan {
+    id: number;
+    name: string;
+    description?: string;
+    price: number;
+    active: boolean;
+    features: any;
+    created_at: string;
+}
+
+export interface Module {
+    id: number;
+    name: string;
+    key: string;
+    description?: string;
+    created_at: string;
+}
+
+export interface TenantPlan {
+    id: number;
+    tenant_id: number;
+    plan_id: number;
+    status: 'active' | 'suspended' | 'cancelled' | 'trial';
+    start_date: string;
+    end_date?: string;
+    auto_renew: boolean;
+    created_at: string;
+    updated_at: string;
+    // Joins
+    plan?: Plan;
 }
 
 export interface UserRole {

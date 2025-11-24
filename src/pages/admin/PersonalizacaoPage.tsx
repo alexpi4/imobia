@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Palette } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -18,45 +18,33 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-
-const DEFAULT_SETTINGS = {
-    primaryColor: '#3882F6',
-    borderRadius: 0.5,
-    fontFamily: 'system-ui',
-    accessibilityMode: false,
-};
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function PersonalizacaoPage() {
-    const [primaryColor, setPrimaryColor] = useState(DEFAULT_SETTINGS.primaryColor);
-    const [borderRadius, setBorderRadius] = useState([DEFAULT_SETTINGS.borderRadius]);
-    const [fontFamily, setFontFamily] = useState(DEFAULT_SETTINGS.fontFamily);
-    const [accessibilityMode, setAccessibilityMode] = useState(DEFAULT_SETTINGS.accessibilityMode);
+    const { settings, updateSettings, resetSettings } = useTheme();
     const [showResetDialog, setShowResetDialog] = useState(false);
 
     const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPrimaryColor(e.target.value);
+        updateSettings({ primaryColor: e.target.value });
         toast.success('Cor principal atualizada');
     };
 
     const handleBorderRadiusChange = (value: number[]) => {
-        setBorderRadius(value);
+        updateSettings({ borderRadius: value[0] });
     };
 
     const handleFontChange = (value: string) => {
-        setFontFamily(value);
+        updateSettings({ fontFamily: value });
         toast.success('Fonte do sistema atualizada');
     };
 
     const handleAccessibilityToggle = (checked: boolean) => {
-        setAccessibilityMode(checked);
+        updateSettings({ accessibilityMode: checked });
         toast.success(checked ? 'Modo de acessibilidade ativado' : 'Modo de acessibilidade desativado');
     };
 
     const handleReset = () => {
-        setPrimaryColor(DEFAULT_SETTINGS.primaryColor);
-        setBorderRadius([DEFAULT_SETTINGS.borderRadius]);
-        setFontFamily(DEFAULT_SETTINGS.fontFamily);
-        setAccessibilityMode(DEFAULT_SETTINGS.accessibilityMode);
+        resetSettings();
         setShowResetDialog(false);
         toast.success('Todas as configurações foram redefinidas');
     };
@@ -66,6 +54,12 @@ export default function PersonalizacaoPage() {
             <div className="flex items-center gap-2 mb-6">
                 <Palette className="h-6 w-6" />
                 <h1 className="text-2xl font-bold">Personalização da Interface</h1>
+            </div>
+
+            <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                    <strong>✨ Alterações em tempo real:</strong> Todas as mudanças são aplicadas instantaneamente em todo o sistema e salvas automaticamente.
+                </p>
             </div>
 
             {/* Aparência */}
@@ -82,15 +76,15 @@ export default function PersonalizacaoPage() {
                                 <input
                                     type="color"
                                     id="primary-color"
-                                    value={primaryColor}
+                                    value={settings.primaryColor}
                                     onChange={handleColorChange}
                                     className="h-10 w-14 rounded-md border border-input cursor-pointer"
                                 />
                             </div>
                             <Input
                                 type="text"
-                                value={primaryColor}
-                                onChange={(e) => setPrimaryColor(e.target.value)}
+                                value={settings.primaryColor}
+                                onChange={(e) => updateSettings({ primaryColor: e.target.value })}
                                 className="flex-1 max-w-[200px] font-mono uppercase"
                                 placeholder="#3882F6"
                             />
@@ -100,14 +94,14 @@ export default function PersonalizacaoPage() {
                     {/* Raio da Borda */}
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="border-radius">Raio da Borda ({borderRadius[0].toFixed(1)}rem)</Label>
+                            <Label htmlFor="border-radius">Raio da Borda ({settings.borderRadius.toFixed(1)}rem)</Label>
                         </div>
                         <Slider
                             id="border-radius"
                             min={0}
                             max={1}
                             step={0.1}
-                            value={borderRadius}
+                            value={[settings.borderRadius]}
                             onValueChange={handleBorderRadiusChange}
                             className="w-full"
                         />
@@ -116,7 +110,7 @@ export default function PersonalizacaoPage() {
                     {/* Fonte do Sistema */}
                     <div className="space-y-2">
                         <Label htmlFor="font-family">Fonte do Sistema</Label>
-                        <Select value={fontFamily} onValueChange={handleFontChange}>
+                        <Select value={settings.fontFamily} onValueChange={handleFontChange}>
                             <SelectTrigger id="font-family">
                                 <SelectValue placeholder="Selecione a fonte" />
                             </SelectTrigger>
@@ -151,7 +145,7 @@ export default function PersonalizacaoPage() {
                         </div>
                         <Switch
                             id="accessibility-mode"
-                            checked={accessibilityMode}
+                            checked={settings.accessibilityMode}
                             onCheckedChange={handleAccessibilityToggle}
                         />
                     </div>
@@ -192,3 +186,4 @@ export default function PersonalizacaoPage() {
         </div>
     );
 }
+

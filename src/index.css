@@ -98,3 +98,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Accessibility Mode Styles */
+.accessibility-mode {
+  font-size: var(--base-font-size, 18px);
+}
+
+.accessibility-mode *:focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 3px;
+}
+
+.accessibility-mode button:focus-visible,
+.accessibility-mode a:focus-visible,
+.accessibility-mode input:focus-visible,
+.accessibility-mode select:focus-visible,
+.accessibility-mode textarea:focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+

@@ -11,7 +11,7 @@ const SidebarContext = React.createContext<{
 })
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
-    const [collapsed, setCollapsed] = React.useState(false)
+    const [collapsed, setCollapsed] = React.useState(false) // false = open, true = collapsed
     return (
         <SidebarContext.Provider value={{ collapsed, setCollapsed }}>
             <div className="flex min-h-screen w-full bg-background text-foreground">
@@ -28,7 +28,11 @@ export function useSidebar() {
 export function Sidebar({ className, children }: { className?: string, children: React.ReactNode }) {
     const { collapsed } = useSidebar()
     return (
-        <aside className={cn("border-r bg-card transition-all duration-300", collapsed ? "w-16" : "w-64", className)}>
+        <aside className={cn(
+            "sticky top-0 h-screen border-r bg-card transition-all duration-300 overflow-y-auto",
+            collapsed ? "w-16" : "w-64",
+            className
+        )}>
             {children}
         </aside>
     )
