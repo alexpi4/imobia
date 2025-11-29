@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -38,7 +39,7 @@ const webhookSchema = z.object({
     ativo: z.boolean(),
 });
 
-type WebhookFormData = z.infer<typeof webhookSchema>;
+export type WebhookFormData = z.infer<typeof webhookSchema>;
 
 interface WebhookDialogProps {
     open: boolean;
@@ -46,6 +47,7 @@ interface WebhookDialogProps {
     webhook?: Webhook | null;
     onSave: (data: WebhookFormData & { eventos: string[] }) => void;
     isLoading?: boolean;
+    isFixed?: boolean;
 }
 
 export function WebhookDialog({
@@ -54,17 +56,41 @@ export function WebhookDialog({
     webhook,
     onSave,
     isLoading,
+    isFixed = false,
 }: WebhookDialogProps) {
     const form = useForm<WebhookFormData>({
         resolver: zodResolver(webhookSchema),
         defaultValues: {
-            nome: webhook?.nome || '',
-            url: webhook?.url || '',
-            tipo: webhook?.tipo || 'manual',
-            secret: webhook?.secret || '',
-            ativo: webhook?.ativo ?? true,
+            nome: '',
+            url: '',
+            tipo: 'manual',
+            secret: '',
+            ativo: true,
         },
     });
+
+    // Reset form when webhook changes or dialog opens
+    useEffect(() => {
+        if (open) {
+            if (webhook) {
+                form.reset({
+                    nome: webhook.nome,
+                    url: webhook.url,
+                    tipo: webhook.tipo,
+                    secret: webhook.secret || '',
+                    ativo: webhook.ativo,
+                });
+            } else {
+                form.reset({
+                    nome: '',
+                    url: '',
+                    tipo: 'manual',
+                    secret: '',
+                    ativo: true,
+                });
+            }
+        }
+    }, [webhook, open, form]);
 
     const handleSubmit = (data: WebhookFormData) => {
         onSave({ ...data, eventos: webhook?.eventos || [] });
@@ -75,11 +101,15 @@ export function WebhookDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                    <DialogTitle>{webhook ? 'Editar Webhook' : 'Novo Webhook'}</DialogTitle>
+                    <DialogTitle>
+                        {isFixed ? 'Atualizar Webhook do Sistema' : webhook ? 'Editar Webhook' : 'Novo Webhook'}
+                    </DialogTitle>
                     <DialogDescription>
-                        {webhook
-                            ? 'Atualize as informações do webhook.'
-                            : 'Adicione um novo webhook ao sistema.'}
+                        {isFixed
+                            ? 'Atualize a URL e configurações do webhook do sistema.'
+                            : webhook
+                                ? 'Atualize as informações do webhook.'
+                                : 'Adicione um novo webhook ao sistema.'}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -91,7 +121,11 @@ export function WebhookDialog({
                                 <FormItem>
                                     <FormLabel>Nome *</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Ex: Webhook RD Station" {...field} />
+                                        <Input
+                                            placeholder="Ex: Webhook RD Station"
+                                            {...field}
+                                            disabled={isFixed}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -116,7 +150,11 @@ export function WebhookDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Tipo</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        disabled={isFixed}
+                                    >
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue />

@@ -110,9 +110,9 @@ export default function PipelinePage() {
                     etapa_id: overStageId,
                     pipeline_id: selectedPipelineId,
                 });
-            } catch (error: any) {
+            } catch (error) {
                 console.error('Erro ao mover lead:', error);
-                toast.error(`Erro ao mover lead: ${error.message || error}`);
+                toast.error(`Erro ao mover lead: ${(error as Error).message || error}`);
             }
         }
 
@@ -129,13 +129,13 @@ export default function PipelinePage() {
         setIsDialogOpen(true);
     };
 
-    const handleSaveLead = async (data: any) => {
+    const handleSaveLead = async (data: Partial<Lead>) => {
         try {
             if (selectedLead) {
                 await updateLeadAsync({ id: selectedLead.id, ...data });
                 toast.success('Lead atualizado com sucesso!');
             } else {
-                await createLeadAsync(data);
+                await createLeadAsync(data as any);
                 toast.success('Lead criado com sucesso!');
             }
             setIsDialogOpen(false);

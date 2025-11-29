@@ -1,0 +1,26 @@
+# Task: Implement New Analytical Dashboard
+
+- [x] **Planning & Setup** <!-- id: 0 -->
+    - [x] Verify dependencies (recharts, etc.) <!-- id: 2 -->
+    - [x] Create implementation plan <!-- id: 1 -->
+- [x] **Database Layer (Supabase)** <!-- id: 3 -->
+    - [x] Create RPC function `get_dashboard_kpis` (Leads Novos, Intenção, Unidade Destaque, Intervalo Médio) <!-- id: 4 -->
+    - [x] Create RPC function `get_leads_by_day` (Line Chart) <!-- id: 5 -->
+    - [x] Create RPC function `get_leads_by_origin` (Bar Chart) <!-- id: 6 -->
+    - [x] Create RPC function `get_leads_by_unit` (Pie Chart) <!-- id: 7 -->
+    - [x] Create RPC function `get_leads_by_urgency` (Bar Chart) <!-- id: 8 -->
+    - [x] Create RPC function `get_unit_distribution` (Table) <!-- id: 9 -->
+- [x] **Frontend Implementation** <!-- id: 10 -->
+    - [x] Create `useDashboard` hook to fetch data from RPCs <!-- id: 11 -->
+    - [x] Create `DashboardLayout` and Header with Date Filter <!-- id: 12 -->
+    - [x] Implement `KPICards` component <!-- id: 13 -->
+    - [x] Implement `LeadsByDayChart` (Line) <!-- id: 14 -->
+    - [x] Implement `LeadsByOriginChart` (Bar) <!-- id: 15 -->
+    - [x] Implement `LeadsByUnitChart` (Pie) <!-- id: 16 -->
+    - [x] Implement `LeadsByUrgencyChart` (Bar) <!-- id: 17 -->
+    - [x] Implement `UnitDistributionTable` <!-- id: 18 -->
+    - [x] Assemble `DashboardPage` <!-- id: 19 -->
+- [ ] **Verification** <!-- id: 20 -->
+    - [ ] Verify data accuracy with seeded data <!-- id: 21 -->
+    - [ ] Check responsiveness and UI/UX against reference image <!-- id: 22 -->
+    - [ ] Ensure date filters work correctly <!-- id: 23 -->

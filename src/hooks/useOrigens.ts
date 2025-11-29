@@ -34,7 +34,7 @@ export function useOrigens() {
             queryClient.invalidateQueries({ queryKey: ['origens'] });
             toast.success('Origem criada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar origem: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useOrigens() {
             queryClient.invalidateQueries({ queryKey: ['origens'] });
             toast.success('Origem atualizada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar origem: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useOrigens() {
             queryClient.invalidateQueries({ queryKey: ['origens'] });
             toast.success('Origem excluída com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir origem: ${error.message}`);
         },
     });

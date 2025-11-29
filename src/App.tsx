@@ -7,7 +7,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/layout/Layout';
 import { Toaster } from 'sonner';
 import Auth from '@/pages/Auth';
-import Dashboard from '@/pages/Dashboard';
+import DashboardPage from '@/pages/DashboardPage';
 import TurnosPage from '@/pages/cadastros/TurnosPage';
 import PlanejamentoPlantaoPage from '@/pages/operacional/PlanejamentoPlantaoPage';
 import DistribuicaoLeadPage from '@/pages/operacional/DistribuicaoLeadPage';
@@ -15,13 +15,13 @@ import DashboardRoletaPage from '@/pages/operacional/DashboardRoletaPage';
 import NotificaPlantaoPage from '@/pages/operacional/NotificaPlantaoPage';
 import AgendarVisitaPage from '@/pages/operacional/AgendarVisitaPage';
 import HistoricoDistribuicaoPage from '@/pages/operacional/HistoricoDistribuicaoPage';
-import ConfiguracaoPage from '@/pages/admin/ConfiguracaoPage';
+
 import AdminPage from '@/pages/admin/AdminPage';
 import WebhooksPage from '@/pages/admin/WebhooksPage';
 import CidadesPage from '@/pages/cadastros/CidadesPage';
 import TimeDeVendasPage from '@/pages/cadastros/TimeDeVendasPage';
 import UnidadesPage from '@/pages/cadastros/UnidadesPage';
-import IntegracaoPage from '@/pages/admin/IntegracaoPage';
+
 import IntencoesPage from '@/pages/cadastros/IntencoesPage';
 import OrigensPage from '@/pages/cadastros/OrigensPage';
 import LeadsPage from '@/pages/LeadsPage';
@@ -71,7 +71,7 @@ function App() {
                 <Route path="/auth" element={<Auth />} />
 
                 <Route element={<ProtectedRoute />}>
-                  <Route element={<Layout><Dashboard /></Layout>} path="/" />
+                  <Route element={<Layout><DashboardPage /></Layout>} path="/" />
                   <Route element={<Layout><AnaliseCLPage /></Layout>} path="/analise-cl" />
                   <Route element={<Layout><PerformancePage /></Layout>} path="/performance" />
 
@@ -103,8 +103,8 @@ function App() {
 
                   {/* Admin */}
                   <Route element={<Layout><AdminPage /></Layout>} path="/admin" />
-                  <Route element={<Layout><ConfiguracaoPage /></Layout>} path="/configuracao" />
-                  <Route element={<Layout><IntegracaoPage /></Layout>} path="/admin/integracoes" />
+
+
                   <Route element={<Layout><WebhooksPage /></Layout>} path="/admin/webhooks" />
                   <Route element={<Layout><GoogleCalendarPage /></Layout>} path="/admin/google-calendar" />
                   <Route element={<Layout><UsuariosPage /></Layout>} path="/admin/usuarios" />

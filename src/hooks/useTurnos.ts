@@ -34,7 +34,7 @@ export function useTurnos() {
             queryClient.invalidateQueries({ queryKey: ['turnos'] });
             toast.success('Turno criado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar turno: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useTurnos() {
             queryClient.invalidateQueries({ queryKey: ['turnos'] });
             toast.success('Turno atualizado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar turno: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useTurnos() {
             queryClient.invalidateQueries({ queryKey: ['turnos'] });
             toast.success('Turno excluído com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir turno: ${error.message}`);
         },
     });

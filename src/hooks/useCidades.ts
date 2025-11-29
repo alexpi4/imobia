@@ -34,7 +34,7 @@ export function useCidades() {
             queryClient.invalidateQueries({ queryKey: ['cidades'] });
             toast.success('Cidade criada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar cidade: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useCidades() {
             queryClient.invalidateQueries({ queryKey: ['cidades'] });
             toast.success('Cidade atualizada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar cidade: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useCidades() {
             queryClient.invalidateQueries({ queryKey: ['cidades'] });
             toast.success('Cidade excluída com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir cidade: ${error.message}`);
         },
     });

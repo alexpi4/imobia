@@ -46,8 +46,8 @@ export interface LogAuditoria {
     acao: 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'LOGOUT' | 'DISTRIBUICAO' | 'ROLETA' | 'WEBHOOK';
     entidade: string;
     entidade_id?: string;
-    dados_anteriores?: Record<string, any>;
-    dados_novos?: Record<string, any>;
+    dados_anteriores?: Record<string, unknown>;
+    dados_novos?: Record<string, unknown>;
     timestamp: string;
     usuario?: Profile;
 }

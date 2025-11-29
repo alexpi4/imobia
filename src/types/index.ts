@@ -30,7 +30,7 @@ export interface Plan {
     description?: string;
     price: number;
     active: boolean;
-    features: any;
+    features: Record<string, unknown>;
     created_at: string;
 }
 
@@ -134,7 +134,7 @@ export interface PipelineAutomation {
         to?: number | 'any';
     };
     acao_tipo: 'email' | 'webhook' | 'whatsapp' | 'task';
-    acao_config: Record<string, any>;
+    acao_config: Record<string, unknown>;
     ativo: boolean;
     created_at?: string;
 }
@@ -144,7 +144,7 @@ export interface PipelineAutomationLog {
     automacao_id: number;
     lead_id: number;
     status: string;
-    details?: any;
+    details?: Record<string, unknown>;
     executed_at: string;
 }
 
@@ -167,14 +167,6 @@ export interface TimeDeVendas {
     updated_at: string;
 }
 
-export interface Integracao {
-    id: number;
-    nome: string;
-    url: string;
-    status: string;
-    created_at: string;
-    updated_at: string;
-}
 
 export interface Intencao {
     id: number;
@@ -198,6 +190,7 @@ export interface Webhook {
     secret?: string;
     eventos: string[];
     ativo: boolean;
+    fix?: boolean;
     ultima_execucao?: string;
     total_execucoes: number;
     created_at: string;
@@ -208,8 +201,8 @@ export interface HistoricoWebhook {
     id: number;
     webhook_id: number;
     rodada_id?: number;
-    payload: any;
-    response: any;
+    payload: Record<string, unknown>;
+    response: Record<string, unknown>;
     status_code?: number;
     sucesso: boolean;
     erro?: string;

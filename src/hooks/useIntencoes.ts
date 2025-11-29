@@ -34,7 +34,7 @@ export function useIntencoes() {
             queryClient.invalidateQueries({ queryKey: ['intencoes'] });
             toast.success('Intenção criada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar intenção: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useIntencoes() {
             queryClient.invalidateQueries({ queryKey: ['intencoes'] });
             toast.success('Intenção atualizada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar intenção: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useIntencoes() {
             queryClient.invalidateQueries({ queryKey: ['intencoes'] });
             toast.success('Intenção excluída com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir intenção: ${error.message}`);
         },
     });

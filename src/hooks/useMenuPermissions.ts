@@ -11,7 +11,7 @@ const MENU_MODULE_REQUIREMENTS: Record<string, string[]> = {
     'funil-vendas': ['crm_basic', 'crm_full'],
     'analise-cl': ['crm_full'],
     'performance': ['crm_full'],
-    'integracoes': ['integracoes'],
+
     'webhooks': ['integracoes'],
     'chat': ['chat_internal', 'multiatendimento'],
 };

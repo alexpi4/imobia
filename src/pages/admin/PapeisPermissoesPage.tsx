@@ -71,7 +71,7 @@ const AVAILABLE_MENUS = [
     { id: 'integracoes-api', label: 'Integrações e API (Grupo)', icon: Link2, category: 'Administração' },
     { id: 'admin-webhooks', label: '→ Webhooks', icon: Webhook, category: 'Administração' },
     { id: 'admin-google-calendar', label: '→ Google Calendar', icon: Calendar, category: 'Administração' },
-    { id: 'cadastros-integracoes', label: '→ Integração', icon: Link2, category: 'Administração' },
+
 
     // Segurança e Acessos (Group + Sub-items)
     { id: 'seguranca-acessos', label: 'Segurança e Acessos (Grupo)', icon: Shield, category: 'Administração' },

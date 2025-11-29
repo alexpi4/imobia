@@ -34,7 +34,7 @@ export function useUnidades() {
             queryClient.invalidateQueries({ queryKey: ['unidades'] });
             toast.success('Unidade criada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar unidade: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useUnidades() {
             queryClient.invalidateQueries({ queryKey: ['unidades'] });
             toast.success('Unidade atualizada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar unidade: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useUnidades() {
             queryClient.invalidateQueries({ queryKey: ['unidades'] });
             toast.success('Unidade excluída com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir unidade: ${error.message}`);
         },
     });

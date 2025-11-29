@@ -70,7 +70,7 @@ export function AppSidebar() {
         'agendamento-visitas': false,
         'distribuicao-lead': false,
         'cadastros-group': false,
-        'integracoes-api': false,
+
         'seguranca-acessos': false,
         'configuracoes-sistema': false,
         'chat-group': false,
@@ -166,8 +166,7 @@ export function AppSidebar() {
             id: 'integracoes-api',
             items: [
                 { title: "Webhooks", url: "/admin/webhooks", icon: Webhook, id: 'admin-webhooks' },
-                { title: "Google Calendar", url: "/admin/google-calendar", icon: CalendarDays, id: 'admin-google-calendar' },
-                { title: "Integração", url: "/admin/integracoes", icon: Link, id: 'cadastros-integracoes' }
+                { title: "Google Calendar", url: "/admin/google-calendar", icon: CalendarDays, id: 'admin-google-calendar' }
             ]
         },
         {

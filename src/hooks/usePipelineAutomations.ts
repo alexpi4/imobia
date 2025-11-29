@@ -37,7 +37,7 @@ export function usePipelineAutomations(pipelineId?: number) {
             queryClient.invalidateQueries({ queryKey: ['pipeline-automations'] });
             toast.success('Automação criada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar automação: ${error.message}`);
         },
     });
@@ -58,7 +58,7 @@ export function usePipelineAutomations(pipelineId?: number) {
             queryClient.invalidateQueries({ queryKey: ['pipeline-automations'] });
             toast.success('Automação atualizada com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar automação: ${error.message}`);
         },
     });
@@ -76,7 +76,7 @@ export function usePipelineAutomations(pipelineId?: number) {
             queryClient.invalidateQueries({ queryKey: ['pipeline-automations'] });
             toast.success('Automação excluída com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir automação: ${error.message}`);
         },
     });

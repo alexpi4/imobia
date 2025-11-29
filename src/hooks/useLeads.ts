@@ -38,7 +38,7 @@ export function useLeads() {
             queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead criado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar lead: ${error.message}`);
         },
     });
@@ -59,7 +59,7 @@ export function useLeads() {
             queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead atualizado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar lead: ${error.message}`);
         },
     });
@@ -77,7 +77,7 @@ export function useLeads() {
             queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead excluído com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir lead: ${error.message}`);
         },
     });

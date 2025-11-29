@@ -34,7 +34,7 @@ export function useTimeDeVendas() {
             queryClient.invalidateQueries({ queryKey: ['time-de-vendas'] });
             toast.success('Time criado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao criar time: ${error.message}`);
         },
     });
@@ -55,7 +55,7 @@ export function useTimeDeVendas() {
             queryClient.invalidateQueries({ queryKey: ['time-de-vendas'] });
             toast.success('Time atualizado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao atualizar time: ${error.message}`);
         },
     });
@@ -73,7 +73,7 @@ export function useTimeDeVendas() {
             queryClient.invalidateQueries({ queryKey: ['time-de-vendas'] });
             toast.success('Time excluído com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(`Erro ao excluir time: ${error.message}`);
         },
     });

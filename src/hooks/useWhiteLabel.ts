@@ -94,7 +94,7 @@ export function useWhiteLabel() {
             queryClient.invalidateQueries({ queryKey: ['white-label-settings'] });
             toast.success('Configurações salvas com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error('Erro ao salvar configurações: ' + error.message);
         },
     });
@@ -138,7 +138,7 @@ export function useWhiteLabel() {
             });
             toast.success('Logo enviado com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error('Erro ao enviar logo: ' + error.message);
         },
     });
@@ -168,7 +168,7 @@ export function useWhiteLabel() {
         onSuccess: () => {
             toast.success('Logo removido com sucesso!');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error('Erro ao remover logo: ' + error.message);
         },
     });

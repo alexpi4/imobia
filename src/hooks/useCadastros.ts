@@ -19,9 +19,10 @@ export function useCadastro<T extends { id: number }>(
 
             if (error) throw error;
             setData(result as unknown as T[]);
-        } catch (error: any) {
-            console.error(`Error fetching ${tableName}:`, error);
-            toast.error(`Erro ao carregar dados: ${error.message}`);
+        } catch (error) {
+            console.error(`Error processing ${tableName}:`, error);
+            toast.error(`Erro: ${(error as Error).message}`);
+            throw error;
         } finally {
             setLoading(false);
         }
@@ -55,9 +56,9 @@ export function useCadastro<T extends { id: number }>(
             if (error) throw error;
             toast.success('Registro criado com sucesso!');
             return newItem;
-        } catch (error: any) {
+        } catch (error) {
             console.error(`Error creating in ${tableName}:`, error);
-            toast.error(`Erro ao criar: ${error.message}`);
+            toast.error(`Erro ao criar: ${(error as Error).message}`);
             throw error;
         }
     };
@@ -71,9 +72,9 @@ export function useCadastro<T extends { id: number }>(
 
             if (error) throw error;
             toast.success('Registro atualizado com sucesso!');
-        } catch (error: any) {
+        } catch (error) {
             console.error(`Error updating in ${tableName}:`, error);
-            toast.error(`Erro ao atualizar: ${error.message}`);
+            toast.error(`Erro ao atualizar: ${(error as Error).message}`);
             throw error;
         }
     };
@@ -87,9 +88,9 @@ export function useCadastro<T extends { id: number }>(
 
             if (error) throw error;
             toast.success('Registro excluído com sucesso!');
-        } catch (error: any) {
+        } catch (error) {
             console.error(`Error deleting from ${tableName}:`, error);
-            toast.error(`Erro ao excluir: ${error.message}`);
+            toast.error(`Erro ao excluir: ${(error as Error).message}`);
             throw error;
         }
     };
