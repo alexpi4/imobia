@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Lead } from '@/types';
-import { Phone, Mail, DollarSign, Calendar } from 'lucide-react';
+import { Phone, Mail, DollarSign, Calendar, GripVertical } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -27,10 +27,13 @@ export function LeadCard({ lead, isDragging = false, onClick }: LeadCardProps) {
 
     return (
         <Card
-            className={`cursor-grab active:cursor-grabbing ${isDragging ? 'shadow-lg' : ''} hover:border-primary transition-colors`}
+            className={`cursor-grab active:cursor-grabbing ${isDragging ? 'shadow-lg ring-2 ring-primary rotate-2' : ''} hover:border-primary transition-all duration-200 group relative`}
             onClick={onClick}
         >
-            <CardHeader className="pb-2">
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground cursor-grab active:cursor-grabbing">
+                <GripVertical className="h-4 w-4" />
+            </div>
+            <CardHeader className="pb-2 pr-8">
                 <div className="flex items-start justify-between gap-2">
                     <CardTitle className="text-sm font-semibold line-clamp-1">
                         {lead.nome}

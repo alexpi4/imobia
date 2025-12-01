@@ -1,34 +1,39 @@
-# Walkthrough - New Analytical Dashboard
+# Walkthrough - New Análise Venda / Locação Dashboard
 
-I have successfully implemented the new Analytical Dashboard, replacing the old dashboard with a modern, performance-optimized version powered by Supabase RPC functions.
+I have successfully implemented the new "Análise Venda / Locação" dashboard as per the PRD, replacing the previous implementation.
 
 ## Changes
 
-### Database Layer
-*   **New RPC Functions**: Created `get_dashboard_kpis`, `get_leads_by_day`, `get_leads_by_origin`, `get_leads_by_unit`, `get_leads_by_urgency`, and `get_unit_distribution` in Supabase to aggregate data efficiently on the server side.
-
-### Frontend
-*   **New Page**: Created `DashboardPage.tsx` as the main entry point.
+### Dashboard Implementation
+*   **Page**: `AnaliseVLPage.tsx` fully updated with the new layout.
 *   **Components**:
-    *   `DashboardHeader`: Includes a date range filter (7, 15, 30, 90, 180 days).
-    *   `KPICards`: Displays "Leads Novos", "Intenção", "Unidade Destaque", and "Intervalo Médio".
-    *   `LeadsByDayChart`: Line chart showing leads over time by intention.
-    *   `LeadsByOriginChart`: Bar chart showing leads by origin.
-    *   `LeadsByUnitChart`: Pie chart showing leads distribution by unit.
-    *   `LeadsByUrgencyChart`: Bar chart showing leads by urgency level.
-    *   `UnitDistributionTable`: Detailed table showing lead sources per unit.
-*   **Hook**: Implemented `useDashboard` to fetch data from the RPC functions using React Query.
-*   **Routing**: Updated `App.tsx` to route `/` to the new `DashboardPage`.
+    *   **Header**: Title and Period Filter (7, 15, 30, 90, 180 days).
+    *   **KPIs**: Leads de Venda and Leads de Locação cards.
+    *   **Charts**:
+        *   Pie Chart: Distribuição Venda vs Locação vs Indefinido.
+        *   Vertical Bar Chart: Venda e Locação por Unidade.
+        *   Horizontal Bar Chart: Venda e Locação por Cidade (Top 10).
+        *   Horizontal Bar Chart: Venda e Locação por Canal de Origem.
+    *   **Table**: Resumo Detalhado by Unidade.
+*   **Data Fetching**: Uses new Supabase RPC functions for server-side aggregation.
+
+### Database (Supabase)
+*   **New RPC Functions**:
+    *   `rpc_get_kpis(periodo_dias)`
+    *   `rpc_get_distribuicao_intencao(periodo_dias)`
+    *   `rpc_get_unidades(periodo_dias)`
+    *   `rpc_get_cidades(periodo_dias)`
+    *   `rpc_get_origens(periodo_dias)`
+    *   `rpc_get_tabela_resumo(periodo_dias)`
+*   **Schema Usage**: Functions use existing `leads` table text columns (`origem`, `unidade`, `intencao`) mapped to the requested logic.
 
 ## Verification Results
 
 ### Automated Checks
 *   **Build**: `npm run build` passed successfully.
-*   **Lint**: `npm run lint` passed (after fixing unused variables).
 
 ### Manual Verification Steps
-1.  **Access Dashboard**: Navigate to the home page (`/`).
-2.  **Check KPIs**: Verify that the top cards display data.
-3.  **Interact with Charts**: Hover over charts to see tooltips.
-4.  **Filter Data**: Change the date filter in the top right corner and verify that all charts and KPIs update accordingly.
-5.  **Responsiveness**: Resize the browser window to ensure the layout adapts (cards stack, charts resize).
+1.  **Access**: Go to "Análise V/L" in the sidebar.
+2.  **Layout**: Verify it matches the provided image (Header, KPIs, 4 Charts, Table).
+3.  **Interactivity**: Change the period filter (e.g., to 7 days) and verify all charts and numbers update.
+4.  **Data Accuracy**: Check if "Venda" and "Locação" counts match across charts and KPIs.

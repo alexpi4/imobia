@@ -27,12 +27,13 @@ import OrigensPage from '@/pages/cadastros/OrigensPage';
 import LeadsPage from '@/pages/LeadsPage';
 import PipelinePage from '@/pages/PipelinePage';
 import FunilVendasPage from '@/pages/FunilVendasPage';
-import AnaliseCLPage from '@/pages/AnaliseCLPage';
+import AnaliseVLPage from '@/pages/AnaliseVLPage';
 import PerformancePage from '@/pages/PerformancePage';
 import PipelineListPage from '@/pages/cadastros/PipelineListPage';
 import PipelineFormPage from '@/pages/cadastros/PipelineFormPage';
 import PipelineAutomationsPage from '@/pages/cadastros/PipelineAutomationsPage';
 import GoogleCalendarPage from '@/pages/admin/GoogleCalendarPage';
+import SupabaseConfigPage from '@/pages/admin/SupabaseConfigPage';
 import UsuariosPage from '@/pages/admin/UsuariosPage';
 import PapeisPermissoesPage from '@/pages/admin/PapeisPermissoesPage';
 import LogsAuditoriaPage from '@/pages/admin/LogsAuditoriaPage';
@@ -72,7 +73,7 @@ function App() {
 
                 <Route element={<ProtectedRoute />}>
                   <Route element={<Layout><DashboardPage /></Layout>} path="/" />
-                  <Route element={<Layout><AnaliseCLPage /></Layout>} path="/analise-cl" />
+                  <Route element={<Layout><AnaliseVLPage /></Layout>} path="/analise-vl" />
                   <Route element={<Layout><PerformancePage /></Layout>} path="/performance" />
 
                   {/* CRM */}
@@ -107,6 +108,7 @@ function App() {
 
                   <Route element={<Layout><WebhooksPage /></Layout>} path="/admin/webhooks" />
                   <Route element={<Layout><GoogleCalendarPage /></Layout>} path="/admin/google-calendar" />
+                  <Route element={<Layout><SupabaseConfigPage /></Layout>} path="/admin/supabase" />
                   <Route element={<Layout><UsuariosPage /></Layout>} path="/admin/usuarios" />
                   <Route element={<Layout><PapeisPermissoesPage /></Layout>} path="/admin/papeis-permissoes" />
                   <Route element={<Layout><LogsAuditoriaPage /></Layout>} path="/admin/logs-auditoria" />

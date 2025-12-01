@@ -91,5 +91,11 @@ export function usePipelineAutomations(pipelineId?: number) {
         isCreating: createMutation.isPending,
         isUpdating: updateMutation.isPending,
         isDeleting: deleteMutation.isPending,
+        logAutomationExecution: async (log: { automacao_id: number; lead_id: number; status: string; details?: Record<string, unknown> }) => {
+            const { error } = await supabase
+                .from('pipeline_automacao_logs')
+                .insert([log]);
+            if (error) console.error('Error logging automation:', error);
+        }
     };
 }

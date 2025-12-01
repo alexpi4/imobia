@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useLeads } from '@/hooks/useLeads';
 import { usePipelines } from '@/hooks/usePipelines';
 import { useUnidades } from '@/hooks/useUnidades';
+import { usePipelineAutomations } from '@/hooks/usePipelineAutomations';
 import { Lead } from '@/types';
 import { PipelineColumn } from '@/components/pipeline/PipelineColumn';
 import { LeadCard } from '@/components/pipeline/LeadCard';
@@ -19,6 +20,7 @@ export default function PipelinePage() {
     const [selectedUnidadeId, setSelectedUnidadeId] = useState<number | undefined>();
     const { pipelines, isLoading: pipelinesLoading } = usePipelines(selectedUnidadeId);
     const [selectedPipelineId, setSelectedPipelineId] = useState<number | undefined>();
+    const { automations, logAutomationExecution } = usePipelineAutomations(selectedPipelineId);
     const [activeId, setActiveId] = useState<string | null>(null);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -104,15 +106,77 @@ export default function PipelinePage() {
 
         if (activeLead && activeLead.etapa_id !== overStageId && stages.some(s => s.id === overStageId)) {
             // Update the lead's pipeline stage
+            let moveSuccess = false;
             try {
                 await updateLeadAsync({
                     id: activeLead.id,
                     etapa_id: overStageId,
                     pipeline_id: selectedPipelineId,
                 });
+                moveSuccess = true;
             } catch (error) {
                 console.error('Erro ao mover lead:', error);
                 toast.error(`Erro ao mover lead: ${(error as Error).message || error}`);
+            }
+
+            // Check and execute automations
+            if (moveSuccess) {
+                const matchingAutomations = automations?.filter(auto => {
+                    if (!auto.ativo) return false;
+                    if (auto.gatilho !== 'stage_change') return false;
+
+                    const fromMatch = auto.gatilho_config.from === 'any' || auto.gatilho_config.from === activeLead.etapa_id;
+                    const toMatch = auto.gatilho_config.to === 'any' || auto.gatilho_config.to === overStageId;
+
+                    return fromMatch && toMatch;
+                }) || [];
+
+                for (const automation of matchingAutomations) {
+                    try {
+                        // Simulate execution based on type (in a real app, this might call an edge function)
+                        if (automation.acao_tipo === 'webhook' && automation.acao_config?.url) {
+                            // Basic webhook execution
+                            try {
+                                const updatedLead = {
+                                    ...activeLead,
+                                    etapa_id: overStageId,
+                                    pipeline_id: selectedPipelineId
+                                };
+
+                                await fetch(automation.acao_config.url as string, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(updatedLead)
+                                });
+                            } catch (e) {
+                                console.error('Webhook failed', e);
+                                throw new Error('Webhook execution failed');
+                            }
+                        }
+
+                        // Log success
+                        await logAutomationExecution({
+                            automacao_id: automation.id,
+                            lead_id: activeLead.id,
+                            status: 'success',
+                            details: { message: 'Executed successfully via frontend' }
+                        });
+
+                        toast.success(`Automação "${automation.nome}" executada com sucesso!`);
+                    } catch (err) {
+                        console.error(`Error executing automation ${automation.nome}:`, err);
+
+                        // Log failure
+                        await logAutomationExecution({
+                            automacao_id: automation.id,
+                            lead_id: activeLead.id,
+                            status: 'error',
+                            details: { error: (err as Error).message }
+                        });
+
+                        toast.error(`Automação "${automation.nome}" falhou.`);
+                    }
+                }
             }
         }
 
@@ -242,14 +306,26 @@ export default function PipelinePage() {
                     onDragEnd={handleDragEnd}
                 >
                     <div className="flex gap-4 overflow-x-auto pb-4 h-[calc(100vh-250px)]">
-                        {stages.map((stage) => (
-                            <PipelineColumn
-                                key={stage.id}
-                                stage={stage}
-                                leads={leadsByStage[stage.id] || []}
-                                onCardClick={handleCardClick}
-                            />
-                        ))}
+                        {stages.map((stage) => {
+                            const hasAutomation = automations?.some(a =>
+                                a.ativo && (
+                                    a.gatilho_config.from === stage.id ||
+                                    a.gatilho_config.to === stage.id ||
+                                    a.gatilho_config.from === 'any' ||
+                                    a.gatilho_config.to === 'any'
+                                )
+                            );
+
+                            return (
+                                <PipelineColumn
+                                    key={stage.id}
+                                    stage={stage}
+                                    leads={leadsByStage[stage.id] || []}
+                                    onCardClick={handleCardClick}
+                                    hasAutomation={hasAutomation}
+                                />
+                            );
+                        })}
                     </div>
                     <DragOverlay>
                         {activeLead ? <LeadCard lead={activeLead} /> : null}

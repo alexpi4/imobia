@@ -41,7 +41,8 @@ import {
     Megaphone,
     ShoppingCart,
     MessageCircle,
-    Send
+    Send,
+    Database
 } from 'lucide-react';
 import {
     Sidebar,
@@ -87,7 +88,7 @@ export function AppSidebar() {
 
     const mainMenuItems = [
         { title: "Dashboard", url: "/", icon: LayoutDashboard, id: 'dashboard' },
-        { title: "Análise C/L", url: "/analise-cl", icon: TrendingUp, id: 'analise-cl' },
+        { title: "Análise V/L", url: "/analise-vl", icon: TrendingUp, id: 'analise-vl' },
         { title: "Performance", url: "/performance", icon: BarChart3, id: 'performance' }
     ];
 
@@ -166,7 +167,8 @@ export function AppSidebar() {
             id: 'integracoes-api',
             items: [
                 { title: "Webhooks", url: "/admin/webhooks", icon: Webhook, id: 'admin-webhooks' },
-                { title: "Google Calendar", url: "/admin/google-calendar", icon: CalendarDays, id: 'admin-google-calendar' }
+                { title: "Google Calendar", url: "/admin/google-calendar", icon: CalendarDays, id: 'admin-google-calendar' },
+                { title: "Supabase", url: "/admin/supabase", icon: Database, id: 'admin-supabase' }
             ]
         },
         {

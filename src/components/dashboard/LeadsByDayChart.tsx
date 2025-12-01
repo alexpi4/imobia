@@ -40,7 +40,7 @@ export function LeadsByDayChart({ data, isLoading }: LeadsByDayChartProps) {
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="compra" name="Compra" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                        <Line type="monotone" dataKey="compra" name="Venda" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
                         <Line type="monotone" dataKey="locacao" name="Locação" stroke="#22c55e" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
                         <Line type="monotone" dataKey="indefinido" name="Indefinido" stroke="#f97316" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
                     </LineChart>

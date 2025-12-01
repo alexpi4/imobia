@@ -9,10 +9,11 @@ const MENU_MODULE_REQUIREMENTS: Record<string, string[]> = {
     'pipeline': ['crm_basic', 'crm_full'],
     'leads': ['crm_basic', 'crm_full'],
     'funil-vendas': ['crm_basic', 'crm_full'],
-    'analise-cl': ['crm_full'],
+    'analise-vl': ['crm_full'],
     'performance': ['crm_full'],
 
     'webhooks': ['integracoes'],
+    'admin-supabase': ['integracoes'],
     'chat': ['chat_internal', 'multiatendimento'],
 };
 

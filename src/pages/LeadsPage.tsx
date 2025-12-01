@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Phone, Mail } from 'lucide-react';
+import { Plus, Pencil, Trash2, Phone, Mail, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,9 @@ import { Lead } from '@/types';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+type SortKey = 'id' | 'nome' | 'cidade' | 'unidade' | 'urgencia' | 'origem' | 'pipeline' | 'responsavel' | 'data_criacao';
+type SortDirection = 'asc' | 'desc';
+
 export default function LeadsPage() {
     const { leads, isLoading, createLead, updateLead, deleteLead, isCreating, isUpdating } = useLeads();
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,13 +29,42 @@ export default function LeadsPage() {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
     const [leadToDelete, setLeadToDelete] = useState<Lead | null>(null);
+    const [sortConfig, setSortConfig] = useState<{ key: SortKey; direction: SortDirection }>({
+        key: 'id',
+        direction: 'desc'
+    });
+
+    const handleSort = (key: SortKey) => {
+        setSortConfig((current) => ({
+            key,
+            direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc',
+        }));
+    };
+
+    const getSortIcon = (key: SortKey) => {
+        if (sortConfig.key !== key) return <ArrowUpDown className="ml-2 h-4 w-4" />;
+        return sortConfig.direction === 'asc' ?
+            <ArrowUp className="ml-2 h-4 w-4" /> :
+            <ArrowDown className="ml-2 h-4 w-4" />;
+    };
 
     const filteredLeads = leads?.filter((lead) =>
         lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.telefone.includes(searchTerm) ||
         lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.origem.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).sort((a, b) => {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+
+        if (!aValue && !bValue) return 0;
+        if (!aValue) return 1;
+        if (!bValue) return -1;
+
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+    });
 
     const handleCreate = () => {
         setSelectedLead(null);
@@ -132,20 +164,97 @@ export default function LeadsPage() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Nome</TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('id')}
+                                        >
+                                            <div className="flex items-center">
+                                                ID
+                                                {getSortIcon('id')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('cidade')}
+                                        >
+                                            <div className="flex items-center">
+                                                Cidade
+                                                {getSortIcon('cidade')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('unidade')}
+                                        >
+                                            <div className="flex items-center">
+                                                Unidade
+                                                {getSortIcon('unidade')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('nome')}
+                                        >
+                                            <div className="flex items-center">
+                                                Nome
+                                                {getSortIcon('nome')}
+                                            </div>
+                                        </TableHead>
                                         <TableHead>Contato</TableHead>
-                                        <TableHead>Origem</TableHead>
-                                        <TableHead>Intenção</TableHead>
-                                        <TableHead>Unidade</TableHead>
-                                        <TableHead>Urgência</TableHead>
-                                        <TableHead>Pipeline</TableHead>
-                                        <TableHead>Data</TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('urgencia')}
+                                        >
+                                            <div className="flex items-center">
+                                                Urgência
+                                                {getSortIcon('urgencia')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('origem')}
+                                        >
+                                            <div className="flex items-center">
+                                                Origem
+                                                {getSortIcon('origem')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('pipeline')}
+                                        >
+                                            <div className="flex items-center">
+                                                Pipeline
+                                                {getSortIcon('pipeline')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('responsavel')}
+                                        >
+                                            <div className="flex items-center">
+                                                Responsável
+                                                {getSortIcon('responsavel')}
+                                            </div>
+                                        </TableHead>
+                                        <TableHead
+                                            className="cursor-pointer hover:bg-muted/50"
+                                            onClick={() => handleSort('data_criacao')}
+                                        >
+                                            <div className="flex items-center">
+                                                Criado em
+                                                {getSortIcon('data_criacao')}
+                                            </div>
+                                        </TableHead>
                                         <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {filteredLeads.map((lead) => (
                                         <TableRow key={lead.id}>
+                                            <TableCell>{lead.id}</TableCell>
+                                            <TableCell>{lead.cidade}</TableCell>
+                                            <TableCell>{lead.unidade}</TableCell>
                                             <TableCell className="font-medium">{lead.nome}</TableCell>
                                             <TableCell>
                                                 <div className="flex flex-col gap-1 text-sm">
@@ -161,18 +270,19 @@ export default function LeadsPage() {
                                                     )}
                                                 </div>
                                             </TableCell>
-                                            <TableCell>{lead.origem}</TableCell>
-                                            <TableCell>{lead.intencao}</TableCell>
-                                            <TableCell>{lead.unidade}</TableCell>
                                             <TableCell>
                                                 <Badge variant={getUrgenciaBadgeVariant(lead.urgencia)}>
                                                     {lead.urgencia}
                                                 </Badge>
                                             </TableCell>
+                                            <TableCell>{lead.origem}</TableCell>
                                             <TableCell>
                                                 <Badge variant={getPipelineBadgeVariant(lead.pipeline)}>
                                                     {lead.pipeline}
                                                 </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                {lead.responsavel?.nome || '-'}
                                             </TableCell>
                                             <TableCell className="text-sm text-muted-foreground">
                                                 {format(new Date(lead.data_criacao), 'dd/MM/yyyy', { locale: ptBR })}

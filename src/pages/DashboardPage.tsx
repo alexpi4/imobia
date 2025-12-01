@@ -9,7 +9,10 @@ import { UnitDistributionTable } from '@/components/dashboard/UnitDistributionTa
 import { useDashboard, DashboardPeriod } from '@/hooks/useDashboard';
 
 export default function DashboardPage() {
-    const [period, setPeriod] = useState<DashboardPeriod>('30');
+    const [period, setPeriod] = useState<DashboardPeriod>('7');
+    const [customStart, setCustomStart] = useState<Date | undefined>(undefined);
+    const [customEnd, setCustomEnd] = useState<Date | undefined>(undefined);
+
     const {
         kpis,
         leadsByDay,
@@ -18,11 +21,18 @@ export default function DashboardPage() {
         leadsByUrgency,
         unitDistribution,
         isLoading
-    } = useDashboard(period);
+    } = useDashboard(period, customStart, customEnd);
 
     return (
         <div className="p-8 space-y-8 bg-background min-h-screen">
-            <DashboardHeader period={period} onPeriodChange={setPeriod} />
+            <DashboardHeader
+                period={period}
+                onPeriodChange={setPeriod}
+                customStart={customStart}
+                customEnd={customEnd}
+                onCustomStartChange={setCustomStart}
+                onCustomEndChange={setCustomEnd}
+            />
 
             <KPICards kpis={kpis} isLoading={isLoading} />
 

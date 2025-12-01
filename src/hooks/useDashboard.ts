@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 
-export type DashboardPeriod = '7' | '15' | '30' | '90' | '180';
+export type DashboardPeriod = '0' | '7' | '15' | 'custom';
 
 interface DashboardKPIs {
     total_leads: number;
@@ -46,17 +46,24 @@ interface UnitDistribution {
     percentage: number;
 }
 
-export function useDashboard(period: DashboardPeriod) {
+export function useDashboard(period: DashboardPeriod, customStart?: Date, customEnd?: Date) {
     const getDates = () => {
+        if (period === 'custom') {
+            const start = customStart ? startOfDay(customStart) : startOfDay(new Date());
+            const end = customEnd ? endOfDay(customEnd) : endOfDay(new Date());
+            return { start: start.toISOString(), end: end.toISOString() };
+        }
+
         const end = endOfDay(new Date());
-        const start = startOfDay(subDays(new Date(), parseInt(period)));
+        const days = parseInt(period);
+        const start = startOfDay(days === 0 ? new Date() : subDays(new Date(), days));
         return { start: start.toISOString(), end: end.toISOString() };
     };
 
     const { start, end } = getDates();
 
     const { data: kpis, isLoading: kpisLoading } = useQuery({
-        queryKey: ['dashboard-kpis', period],
+        queryKey: ['dashboard-kpis', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_dashboard_kpis', {
                 start_date: start,
@@ -68,7 +75,7 @@ export function useDashboard(period: DashboardPeriod) {
     });
 
     const { data: leadsByDay, isLoading: leadsByDayLoading } = useQuery({
-        queryKey: ['dashboard-leads-by-day', period],
+        queryKey: ['dashboard-leads-by-day', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_leads_by_day', {
                 start_date: start,
@@ -80,7 +87,7 @@ export function useDashboard(period: DashboardPeriod) {
     });
 
     const { data: leadsByOrigin, isLoading: leadsByOriginLoading } = useQuery({
-        queryKey: ['dashboard-leads-by-origin', period],
+        queryKey: ['dashboard-leads-by-origin', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_leads_by_origin', {
                 start_date: start,
@@ -92,7 +99,7 @@ export function useDashboard(period: DashboardPeriod) {
     });
 
     const { data: leadsByUnit, isLoading: leadsByUnitLoading } = useQuery({
-        queryKey: ['dashboard-leads-by-unit', period],
+        queryKey: ['dashboard-leads-by-unit', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_leads_by_unit', {
                 start_date: start,
@@ -104,7 +111,7 @@ export function useDashboard(period: DashboardPeriod) {
     });
 
     const { data: leadsByUrgency, isLoading: leadsByUrgencyLoading } = useQuery({
-        queryKey: ['dashboard-leads-by-urgency', period],
+        queryKey: ['dashboard-leads-by-urgency', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_leads_by_urgency', {
                 start_date: start,
@@ -116,7 +123,7 @@ export function useDashboard(period: DashboardPeriod) {
     });
 
     const { data: unitDistribution, isLoading: unitDistributionLoading } = useQuery({
-        queryKey: ['dashboard-unit-distribution', period],
+        queryKey: ['dashboard-unit-distribution', period, customStart, customEnd],
         queryFn: async () => {
             const { data, error } = await supabase.rpc('get_unit_distribution', {
                 start_date: start,

@@ -31,7 +31,7 @@ export function KPICards({ kpis, isLoading }: KPICardsProps) {
         );
     }
 
-    const intencaoString = `${kpis?.intencao_counts['Compra'] || 0} / ${kpis?.intencao_counts['Locação'] || 0} / ${kpis?.intencao_counts['Indefinido'] || 0}`;
+    const intencaoString = `${kpis?.intencao_counts['Venda'] || 0} / ${kpis?.intencao_counts['Locação'] || 0} / ${kpis?.intencao_counts['Indefinido'] || 0}`;
 
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -53,7 +53,7 @@ export function KPICards({ kpis, isLoading }: KPICardsProps) {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{intencaoString}</div>
-                    <p className="text-xs text-muted-foreground">Compra / Locação / Indefinido</p>
+                    <p className="text-xs text-muted-foreground">Venda / Locação / Indefinido</p>
                 </CardContent>
             </Card>
 

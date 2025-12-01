@@ -6,14 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, UserPlus, Save, Shield, LayoutDashboard, BarChart3, Users, Settings, Calendar, Bell, Building2, Workflow, Link2, Webhook, MapPin, Target, Share2, Clock, GitBranch, Zap, CreditCard, MessageSquare, Bot, Megaphone, ShoppingCart, MessageCircle, Send } from 'lucide-react';
+import { Search, UserPlus, Save, Shield, LayoutDashboard, BarChart3, Users, Settings, Calendar, Bell, Building2, Workflow, Link2, Webhook, MapPin, Target, Share2, Clock, GitBranch, Zap, CreditCard, MessageSquare, Bot, Megaphone, ShoppingCart, MessageCircle, Send, Database } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Define available menus and their icons - ALL LEVELS (Granular)
 const AVAILABLE_MENUS = [
     // === MENU PRINCIPAL ===
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'Menu Principal' },
-    { id: 'analise-cl', label: 'Análise C/L', icon: BarChart3, category: 'Menu Principal' },
+    { id: 'analise-vl', label: 'Análise V/L', icon: BarChart3, category: 'Menu Principal' },
     { id: 'performance', label: 'Performance', icon: BarChart3, category: 'Menu Principal' },
 
     // === OPERACIONAL ===
@@ -71,6 +71,7 @@ const AVAILABLE_MENUS = [
     { id: 'integracoes-api', label: 'Integrações e API (Grupo)', icon: Link2, category: 'Administração' },
     { id: 'admin-webhooks', label: '→ Webhooks', icon: Webhook, category: 'Administração' },
     { id: 'admin-google-calendar', label: '→ Google Calendar', icon: Calendar, category: 'Administração' },
+    { id: 'admin-supabase', label: '→ Supabase', icon: Database, category: 'Administração' },
 
 
     // Segurança e Acessos (Group + Sub-items)

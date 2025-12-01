@@ -14,7 +14,9 @@ export function useLeads() {
                 .select(`
                     *,
                     responsavel:responsavel_id(id, nome, email),
-                    criador:criado_por(id, nome, email)
+                    criador:criado_por(id, nome, email),
+                    pipeline_obj:pipelines(id, nome),
+                    etapa_obj:pipeline_etapas(id, nome, cor)
                 `)
                 .order('data_criacao', { ascending: false });
 
@@ -24,7 +26,7 @@ export function useLeads() {
     });
 
     const createMutation = useMutation({
-        mutationFn: async (lead: Omit<Lead, 'id' | 'created_at' | 'updated_at' | 'data_criacao' | 'responsavel' | 'criador'>) => {
+        mutationFn: async (lead: Omit<Lead, 'id' | 'created_at' | 'updated_at' | 'data_criacao' | 'responsavel' | 'criador' | 'pipeline_obj' | 'etapa_obj'>) => {
             const { data, error } = await supabase
                 .from('leads')
                 .insert([lead])
@@ -34,8 +36,8 @@ export function useLeads() {
             if (error) throw error;
             return data;
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['leads'] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead criado com sucesso!');
         },
         onError: (error: Error) => {
@@ -55,8 +57,8 @@ export function useLeads() {
             if (error) throw error;
             return data;
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['leads'] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead atualizado com sucesso!');
         },
         onError: (error: Error) => {
@@ -73,8 +75,8 @@ export function useLeads() {
 
             if (error) throw error;
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['leads'] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['leads'] });
             toast.success('Lead excluído com sucesso!');
         },
         onError: (error: Error) => {
