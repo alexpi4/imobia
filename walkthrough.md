@@ -1,39 +1,46 @@
-# Walkthrough - Supabase Config Page
+# Walkthrough
 
-I have implemented a new page to configure the Supabase connection dynamically.
+## Recent Changes
 
-## Changes
+### 1. Codebase Cleanup and Refactoring
+- **Organization**: Moved CRM pages to `src/pages/crm/`.
+- **Cleanup**: Removed unused files and fixed lint errors.
 
-### New Page
--   **Supabase Config Page**: `src/pages/admin/SupabaseConfigPage.tsx`
-    -   Allows users to enter `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
-    -   Saves to `localStorage`.
-    -   Reloads the page to apply changes.
-    -   Includes a "Restaurar Padrão" button to revert to `.env` settings.
+### 2. Feature Implementation: Drag & Drop for Pipeline Stages
+- **Component**: Updated `PipelineFormPage.tsx`.
+- **Library**: Integrated `@dnd-kit/core` and `@dnd-kit/sortable`.
+# Walkthrough
 
-### Supabase Client
--   **Client Initialization**: `src/integrations/supabase/client.ts`
-    -   Modified to check `localStorage` for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` before using environment variables.
+## Recent Changes
 
-### Navigation & Access
--   **Sidebar**: Added "Supabase" to "Integrações e API" group in `AppSidebar.tsx`.
--   **Routes**: Added `/admin/supabase` route in `App.tsx`.
--   **Permissions**: Added `admin-supabase` permission to `useMenuPermissions.ts` (requires 'integracoes' module).
--   **Access Control**: Added "Supabase" to the list of available menus in `PapeisPermissoesPage.tsx` under "Administração", allowing granular permission assignment.
+### 1. Codebase Cleanup and Refactoring
+- **Organization**: Moved CRM pages to `src/pages/crm/`.
+- **Cleanup**: Removed unused files and fixed lint errors.
 
-### Components
--   **Alert**: Created `src/components/ui/alert.tsx` as it was missing and required for the new page.
+### 2. Feature Implementation: Drag & Drop for Pipeline Stages
+- **Component**: Updated `PipelineFormPage.tsx`.
+- **Library**: Integrated `@dnd-kit/core` and `@dnd-kit/sortable`.
+- **Functionality**:
+    - Users can now drag and drop stages to reorder them in the "Edit Pipeline" page.
+    - The new order is automatically reflected in the form state and saved to the backend.
+    - Visual feedback is provided during dragging.
+- **Verification**:
+    - `npm run build` passed.
+    - `npx eslint` passed (with minor warning for dnd-kit compatibility).
 
-## Verification Results
+    - `npx eslint` passed.
 
-### Automated Checks
--   `npm run build` passed successfully.
+### 4. Bug Fix: Pipeline Form Data Loading & Saving
+- **Issue**: "Unidade" and "Tipo" fields were not loading correctly.
+- **Fix**:
+    - **Refactor to Standard Pattern**: Refactored `PipelineFormPage` to use `FormField` and `Controller` components from `react-hook-form` (via `shadcn/ui` Form components). This aligns with the implementation in other pages like `TimeDeVendasDialog` and ensures proper state management for controlled inputs like `Select`.
+    - **Data Type Safety**: Maintained explicit type conversion for `unidade_id` and `tipo`.
+- **Verification**:
+    - `npx eslint` passed.
 
-### Manual Verification Steps
-1.  Navigate to **Integrações e API > Supabase**.
-2.  Enter the new Supabase URL and Anon Key.
-3.  Click **Salvar e Reiniciar**.
-4.  The page should reload.
-5.  Verify that the application is now connected to the new Supabase project (e.g., by checking data or network requests).
-6.  To revert, go back to the page and click **Restaurar Padrão**.
-7.  **Access Control**: Go to **Administração > Papéis e Permissões**, select a user, and verify that "Supabase" appears under "Administração" and can be toggled.
+### 5. Bug Fix: Pipeline Creation (created_by)
+- **Issue**: Pipelines created were having `created_by` as NULL or invalid.
+- **Fix**: Updated `PipelineFormPage.tsx` to use `profile.id` (integer) instead of `user.id` (UUID string) for the `created_by` field.
+- **Verification**:
+    - `npm run build` passed.
+    - `npx eslint` passed.

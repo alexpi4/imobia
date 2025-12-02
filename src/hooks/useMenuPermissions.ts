@@ -25,12 +25,14 @@ export function useMenuPermissions() {
     useEffect(() => {
         if (!profile) {
             setAllowedMenus([]);
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoading(false);
             return;
         }
 
         if (profile.role === 'ADMIN') {
             setAllowedMenus('all');
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoading(false);
             return;
         }

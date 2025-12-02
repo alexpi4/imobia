@@ -9,6 +9,15 @@ import { Trophy, TrendingUp, Users, Target } from 'lucide-react';
 export default function PerformancePage() {
     const { leads, isLoading } = useLeads();
 
+    interface PerformanceData {
+        name: string;
+        total: number;
+        ganho: number;
+        perdido: number;
+        emAndamento: number;
+        totalValue: number;
+    }
+
     const performanceByUser = useMemo(() => {
         if (!leads) return [];
 
@@ -34,9 +43,9 @@ export default function PerformancePage() {
                 acc[userName].emAndamento += 1;
             }
             return acc;
-        }, {} as Record<string, any>);
+        }, {} as Record<string, PerformanceData>);
 
-        return Object.values(grouped).sort((a: any, b: any) => b.ganho - a.ganho);
+        return Object.values(grouped).sort((a: PerformanceData, b: PerformanceData) => b.ganho - a.ganho);
     }, [leads]);
 
     const leadsByDay = useMemo(() => {

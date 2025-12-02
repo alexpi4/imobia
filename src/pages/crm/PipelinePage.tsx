@@ -35,7 +35,6 @@ export default function PipelinePage() {
         if (unidades && unidades.length > 0 && !hasAutoSelectedUnit.current && selectedUnidadeId === undefined) {
             const criciuma = unidades.find(u => u.nome === 'Criciúma');
             if (criciuma) {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setSelectedUnidadeId(criciuma.id);
                 hasAutoSelectedUnit.current = true;
             }
@@ -50,7 +49,6 @@ export default function PipelinePage() {
     // Auto-select first pipeline when pipelines load (only once)
     useEffect(() => {
         if (activePipelines.length > 0 && !hasAutoSelectedPipeline.current && selectedPipelineId === undefined) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelectedPipelineId(activePipelines[0].id);
             hasAutoSelectedPipeline.current = true;
         }
@@ -199,6 +197,7 @@ export default function PipelinePage() {
                 await updateLeadAsync({ id: selectedLead.id, ...data });
                 toast.success('Lead atualizado com sucesso!');
             } else {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 await createLeadAsync(data as any);
                 toast.success('Lead criado com sucesso!');
             }

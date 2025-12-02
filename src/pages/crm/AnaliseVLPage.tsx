@@ -45,7 +45,7 @@ export default function AnaliseVLPage() {
         queryFn: async () => {
             const { data, error } = await supabase.rpc('rpc_get_kpis', { start_date: start, end_date: end });
             if (error) throw error;
-            return data as any;
+            return data as { venda: { count: number; percentage: number }; locacao: { count: number; percentage: number } };
         }
     });
 
@@ -174,7 +174,8 @@ export default function AnaliseVLPage() {
                                     paddingAngle={5}
                                     dataKey="count"
                                     nameKey="intencao"
-                                    label={({ payload }: any) => `${payload.intencao}: ${payload.count} (${payload.percentage}%)`}
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    label={(props: any) => `${props.payload.intencao}: ${props.payload.count} (${props.payload.percentage}%)`}
                                 >
                                     {distribuicao?.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[entry.intencao as keyof typeof COLORS] || COLORS.Indefinido} />

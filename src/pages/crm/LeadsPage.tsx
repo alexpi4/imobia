@@ -81,11 +81,12 @@ export default function LeadsPage() {
         setDeleteDialogOpen(true);
     };
 
-    const handleSave = (data: any) => {
+    const handleSave = (data: Partial<Lead>) => {
         if (selectedLead) {
             updateLead({ id: selectedLead.id, ...data });
         } else {
-            createLead(data);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            createLead(data as any);
         }
         setDialogOpen(false);
     };

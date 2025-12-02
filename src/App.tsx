@@ -24,11 +24,11 @@ import UnidadesPage from '@/pages/cadastros/UnidadesPage';
 
 import IntencoesPage from '@/pages/cadastros/IntencoesPage';
 import OrigensPage from '@/pages/cadastros/OrigensPage';
-import LeadsPage from '@/pages/LeadsPage';
-import PipelinePage from '@/pages/PipelinePage';
-import FunilVendasPage from '@/pages/FunilVendasPage';
-import AnaliseVLPage from '@/pages/AnaliseVLPage';
-import PerformancePage from '@/pages/PerformancePage';
+import LeadsPage from '@/pages/crm/LeadsPage';
+import PipelinePage from '@/pages/crm/PipelinePage';
+import FunilVendasPage from '@/pages/crm/FunilVendasPage';
+import AnaliseVLPage from '@/pages/crm/AnaliseVLPage';
+import PerformancePage from '@/pages/crm/PerformancePage';
 import PipelineListPage from '@/pages/cadastros/PipelineListPage';
 import PipelineFormPage from '@/pages/cadastros/PipelineFormPage';
 import PipelineAutomationsPage from '@/pages/cadastros/PipelineAutomationsPage';
