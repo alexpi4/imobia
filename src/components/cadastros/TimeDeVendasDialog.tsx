@@ -27,6 +27,7 @@ const timeSchema = z.object({
     responsavel: z.string().optional(),
     unidade: z.string().optional(),
     email: z.string().email('Email inválido').optional().or(z.literal('')),
+    calendar_id: z.string().optional(),
 });
 
 type TimeFormData = z.infer<typeof timeSchema>;
@@ -53,6 +54,7 @@ export function TimeDeVendasDialog({
             responsavel: '',
             unidade: '',
             email: '',
+            calendar_id: '',
         },
     });
 
@@ -63,6 +65,7 @@ export function TimeDeVendasDialog({
                 responsavel: time.responsavel || '',
                 unidade: time.unidade || '',
                 email: time.email || '',
+                calendar_id: time.calendar_id || '',
             });
         } else {
             form.reset({
@@ -70,6 +73,7 @@ export function TimeDeVendasDialog({
                 responsavel: '',
                 unidade: '',
                 email: '',
+                calendar_id: '',
             });
         }
     }, [time, form]);
@@ -139,6 +143,19 @@ export function TimeDeVendasDialog({
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input type="email" placeholder="email@exemplo.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="calendar_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>ID do Calendário (Google Calendar)</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Ex: c_188...calendar.google.com" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

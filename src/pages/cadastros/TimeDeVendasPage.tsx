@@ -44,7 +44,7 @@ export default function TimeDeVendasPage() {
         setDeleteDialogOpen(true);
     };
 
-    const handleSave = (data: Omit<TimeDeVendas, 'id' | 'created_at' | 'updated_at' | 'calendar_id'>) => {
+    const handleSave = (data: Omit<TimeDeVendas, 'id' | 'created_at' | 'updated_at'>) => {
         if (selectedTime) {
             updateTime({ id: selectedTime.id, ...data });
         } else {
