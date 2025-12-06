@@ -20,14 +20,16 @@ export function DashboardHeader({
     onCustomEndChange
 }: DashboardHeaderProps) {
     return (
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 animate-fade-in">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                <p className="text-muted-foreground">
+                <h1 className="text-4xl font-bold tracking-tight gradient-text mb-2">
+                    Dashboard
+                </h1>
+                <p className="text-base text-muted-foreground">
                     Visão geral dos seus leads e métricas de vendas
                 </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
                 {period === 'custom' && onCustomStartChange && onCustomEndChange && (
                     <DateRangePicker
                         startDate={customStart}
@@ -37,7 +39,7 @@ export function DashboardHeader({
                     />
                 )}
                 <Select value={period} onValueChange={(value) => onPeriodChange(value as DashboardPeriod)}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[200px] transition-smooth hover:border-primary/50">
                         <SelectValue placeholder="Selecione o período" />
                     </SelectTrigger>
                     <SelectContent>

@@ -14,9 +14,9 @@ interface KPICardsProps {
 export function KPICards({ kpis, isLoading }: KPICardsProps) {
     if (isLoading) {
         return (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {[...Array(4)].map((_, i) => (
-                    <Card key={i} className="animate-pulse">
+                    <Card key={i} className="animate-pulse border-0 shadow-premium">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <div className="h-4 w-24 bg-muted rounded" />
                             <div className="h-4 w-4 bg-muted rounded" />
@@ -33,56 +33,80 @@ export function KPICards({ kpis, isLoading }: KPICardsProps) {
 
     const intencaoString = `${kpis?.intencao_counts['Venda'] || 0} / ${kpis?.intencao_counts['Locação'] || 0} / ${kpis?.intencao_counts['Indefinido'] || 0}`;
 
+    const cards = [
+        {
+            title: 'Leads Novos',
+            value: kpis?.total_leads,
+            description: 'Total no período',
+            icon: TrendingUp,
+            gradient: 'gradient-blue',
+            iconColor: 'text-blue-100',
+            delay: 'animate-delay-100'
+        },
+        {
+            title: 'Intenção',
+            value: intencaoString,
+            description: 'Venda / Locação / Indefinido',
+            icon: Target,
+            gradient: 'gradient-green',
+            iconColor: 'text-green-100',
+            delay: 'animate-delay-200'
+        },
+        {
+            title: 'Unidade Destaque',
+            value: kpis?.top_unidade.nome === 'N/A' ? '-' : kpis?.top_unidade.nome,
+            count: kpis?.top_unidade.count,
+            description: 'Maior volume de leads',
+            icon: Building2,
+            gradient: 'gradient-purple',
+            iconColor: 'text-purple-100',
+            delay: 'animate-delay-300'
+        },
+        {
+            title: 'Intervalo Médio',
+            value: `${kpis?.avg_interval_minutes} min`,
+            description: 'Entre últimos 10 leads',
+            icon: Clock,
+            gradient: 'gradient-orange',
+            iconColor: 'text-orange-100',
+            delay: 'animate-delay-400'
+        }
+    ];
+
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Leads Novos</CardTitle>
-                    <TrendingUp className="h-4 w-4 text-blue-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{kpis?.total_leads}</div>
-                    <p className="text-xs text-muted-foreground">Total no período</p>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Intenção</CardTitle>
-                    <Target className="h-4 w-4 text-green-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{intencaoString}</div>
-                    <p className="text-xs text-muted-foreground">Venda / Locação / Indefinido</p>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Unidade Destaque</CardTitle>
-                    <Building2 className="h-4 w-4 text-purple-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">
-                        {kpis?.top_unidade.nome === 'N/A' ? '-' : kpis?.top_unidade.nome}
-                        <span className="text-base font-normal text-muted-foreground ml-2">
-                            ({kpis?.top_unidade.count})
-                        </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Maior volume de leads</p>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Intervalo Médio</CardTitle>
-                    <Clock className="h-4 w-4 text-orange-500" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{kpis?.avg_interval_minutes} min</div>
-                    <p className="text-xs text-muted-foreground">Entre últimos 10 leads</p>
-                </CardContent>
-            </Card>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {cards.map((card, index) => {
+                const Icon = card.icon;
+                return (
+                    <Card
+                        key={index}
+                        className={`relative overflow-hidden border-0 shadow-premium hover-lift transition-smooth ${card.gradient} animate-scale-in ${card.delay}`}
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                            <CardTitle className="text-sm font-semibold text-white/90">
+                                {card.title}
+                            </CardTitle>
+                            <div className="p-2 rounded-lg bg-white/20 backdrop-blur-sm">
+                                <Icon className={`h-5 w-5 ${card.iconColor}`} />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="relative z-10">
+                            <div className="text-3xl font-bold text-white mb-1">
+                                {card.value}
+                                {card.count !== undefined && (
+                                    <span className="text-lg font-normal text-white/80 ml-2">
+                                        ({card.count})
+                                    </span>
+                                )}
+                            </div>
+                            <p className="text-xs text-white/70 font-medium">
+                                {card.description}
+                            </p>
+                        </CardContent>
+                    </Card>
+                );
+            })}
         </div>
     );
 }

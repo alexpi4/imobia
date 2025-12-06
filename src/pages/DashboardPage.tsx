@@ -24,29 +24,31 @@ export default function DashboardPage() {
     } = useDashboard(period, customStart, customEnd);
 
     return (
-        <div className="p-8 space-y-8 bg-background min-h-screen">
-            <DashboardHeader
-                period={period}
-                onPeriodChange={setPeriod}
-                customStart={customStart}
-                customEnd={customEnd}
-                onCustomStartChange={setCustomStart}
-                onCustomEndChange={setCustomEnd}
-            />
+        <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+            <div className="p-8 space-y-8">
+                <DashboardHeader
+                    period={period}
+                    onPeriodChange={setPeriod}
+                    customStart={customStart}
+                    customEnd={customEnd}
+                    onCustomStartChange={setCustomStart}
+                    onCustomEndChange={setCustomEnd}
+                />
 
-            <KPICards kpis={kpis} isLoading={isLoading} />
+                <KPICards kpis={kpis} isLoading={isLoading} />
 
-            <div className="grid gap-4 md:grid-cols-2">
-                <LeadsByDayChart data={leadsByDay} isLoading={isLoading} />
-                <LeadsByOriginChart data={leadsByOrigin} isLoading={isLoading} />
+                <div className="grid gap-6 md:grid-cols-2">
+                    <LeadsByDayChart data={leadsByDay} isLoading={isLoading} />
+                    <LeadsByOriginChart data={leadsByOrigin} isLoading={isLoading} />
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                    <LeadsByUnitChart data={leadsByUnit} isLoading={isLoading} />
+                    <LeadsByUrgencyChart data={leadsByUrgency} isLoading={isLoading} />
+                </div>
+
+                <UnitDistributionTable data={unitDistribution} isLoading={isLoading} />
             </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-                <LeadsByUnitChart data={leadsByUnit} isLoading={isLoading} />
-                <LeadsByUrgencyChart data={leadsByUrgency} isLoading={isLoading} />
-            </div>
-
-            <UnitDistributionTable data={unitDistribution} isLoading={isLoading} />
         </div>
     );
 }

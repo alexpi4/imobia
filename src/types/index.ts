@@ -11,8 +11,10 @@ export interface Profile {
     ultimo_atendimento?: string;
     total_atendimentos: number;
     role?: AppRole;
+    turnos?: string[] | string; // Array of Shift Names or String
     unidade_id?: number;
     tenant_id?: number;
+    equipe_id?: number;
 }
 
 export interface Tenant {

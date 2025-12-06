@@ -3,7 +3,7 @@ import { Profile, Turno } from '@/types';
 
 
 export interface PlanejamentoPlantao {
-    id: number;
+    id: number | string;
     nome: string;
     mes: string; // YYYY-MM-DD
     equipe_id: number;
