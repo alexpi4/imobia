@@ -247,7 +247,7 @@ export function AppSidebar() {
 
     return (
         <Sidebar>
-            <SidebarGroup>
+            <SidebarGroup className="pt-10">
                 <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
                 <SidebarMenu>
                     {mainMenuItems.map((item) => (

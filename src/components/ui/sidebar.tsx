@@ -29,7 +29,7 @@ export function Sidebar({ className, children }: { className?: string, children:
     const { collapsed } = useSidebar()
     return (
         <aside className={cn(
-            "sticky top-0 h-screen border-r bg-card transition-all duration-300 overflow-y-auto",
+            "h-full border-r bg-card transition-all duration-300 overflow-y-auto shrink-0",
             collapsed ? "w-16" : "w-[290px]",
             className
         )}>
