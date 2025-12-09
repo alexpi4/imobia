@@ -63,9 +63,9 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <WhiteLabelProvider>
-        <ThemeProvider>
-          <AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <WhiteLabelProvider>
             <BrowserRouter>
               <Toaster />
               <Routes>
@@ -138,9 +138,9 @@ function App() {
                 </Route>
               </Routes>
             </BrowserRouter>
-          </AuthProvider>
-        </ThemeProvider>
-      </WhiteLabelProvider>
+          </WhiteLabelProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

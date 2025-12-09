@@ -1,5 +1,7 @@
 import { createContext, useContext, ReactNode, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useWhiteLabel, WhiteLabelSettings } from '@/hooks/useWhiteLabel';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface WhiteLabelContextType {
     settings: WhiteLabelSettings | null | undefined;
@@ -16,6 +18,15 @@ const WhiteLabelContext = createContext<WhiteLabelContextType | undefined>(undef
 export function WhiteLabelProvider({ children }: { children: ReactNode }) {
     const whiteLabelHook = useWhiteLabel();
     const { settings } = whiteLabelHook;
+    const { user } = useAuth();
+    const queryClient = useQueryClient();
+
+    // Refetch settings when user changes (e.g. login)
+    useEffect(() => {
+        if (user?.id) {
+            queryClient.invalidateQueries({ queryKey: ['white-label-settings'] });
+        }
+    }, [user?.id, queryClient]);
 
     // Apply white label settings to the document
     useEffect(() => {
