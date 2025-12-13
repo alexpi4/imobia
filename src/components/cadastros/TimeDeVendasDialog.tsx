@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { TimeDeVendas } from '@/types';
 
 const timeSchema = z.object({
@@ -28,6 +29,7 @@ const timeSchema = z.object({
     unidade: z.string().optional(),
     email: z.string().email('Email inválido').optional().or(z.literal('')),
     calendar_id: z.string().optional(),
+    roleta: z.boolean().default(false),
 });
 
 type TimeFormData = z.infer<typeof timeSchema>;
@@ -55,6 +57,7 @@ export function TimeDeVendasDialog({
             unidade: '',
             email: '',
             calendar_id: '',
+            roleta: false,
         },
     });
 
@@ -66,6 +69,7 @@ export function TimeDeVendasDialog({
                 unidade: time.unidade || '',
                 email: time.email || '',
                 calendar_id: time.calendar_id || '',
+                roleta: time.roleta || false,
             });
         } else {
             form.reset({
@@ -74,6 +78,7 @@ export function TimeDeVendasDialog({
                 unidade: '',
                 email: '',
                 calendar_id: '',
+                roleta: false,
             });
         }
     }, [time, form]);
@@ -158,6 +163,26 @@ export function TimeDeVendasDialog({
                                         <Input placeholder="Ex: c_188...calendar.google.com" {...field} />
                                     </FormControl>
                                     <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="roleta"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                    <div className="space-y-0.5">
+                                        <FormLabel className="text-base">Roleta Ativa</FormLabel>
+                                        <DialogDescription>
+                                            Habilita este time para a roleta de distribuição de leads.
+                                        </DialogDescription>
+                                    </div>
+                                    <FormControl>
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
                                 </FormItem>
                             )}
                         />

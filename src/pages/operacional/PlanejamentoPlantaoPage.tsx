@@ -438,7 +438,7 @@ export default function PlanejamentoPlantaoPage() {
                                             <SelectValue placeholder="Selecione a equipe" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {equipes?.map(e => (
+                                            {equipes?.filter(e => e.roleta).map(e => (
                                                 <SelectItem key={e.id} value={String(e.id)}>{e.nome}</SelectItem>
                                             ))}
                                         </SelectContent>

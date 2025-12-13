@@ -165,6 +165,7 @@ export interface TimeDeVendas {
     unidade?: string;
     email?: string;
     calendar_id?: string;
+    roleta?: boolean;
     created_at: string;
     updated_at: string;
 }

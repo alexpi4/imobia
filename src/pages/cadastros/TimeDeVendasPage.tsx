@@ -101,6 +101,7 @@ export default function TimeDeVendasPage() {
                                         <TableHead>Responsável</TableHead>
                                         <TableHead>Unidade</TableHead>
                                         <TableHead>Email</TableHead>
+                                        <TableHead>Roleta</TableHead>
                                         <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -111,6 +112,11 @@ export default function TimeDeVendasPage() {
                                             <TableCell>{time.responsavel || '-'}</TableCell>
                                             <TableCell>{time.unidade || '-'}</TableCell>
                                             <TableCell>{time.email || '-'}</TableCell>
+                                            <TableCell>
+                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${time.roleta ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                                    {time.roleta ? 'Sim' : 'Não'}
+                                                </span>
+                                            </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
                                                     <Button

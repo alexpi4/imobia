@@ -15,11 +15,20 @@ import { LeadViewDialog } from '@/components/leads/LeadViewDialog';
 import { toast } from 'sonner';
 
 export default function PipelinePage() {
-    const { leads, isLoading: leadsLoading, updateLeadAsync, createLeadAsync, isUpdating, isCreating } = useLeads();
-    const { unidades } = useUnidades();
     const [selectedUnidadeId, setSelectedUnidadeId] = useState<number | undefined>();
+    const { unidades } = useUnidades();
+
+    // Move pipeline selection state up so we can use it in useLeads
     const { pipelines, isLoading: pipelinesLoading } = usePipelines(selectedUnidadeId);
+    // Initialize with undefined, logic below will set it
     const [selectedPipelineId, setSelectedPipelineId] = useState<number | undefined>();
+
+    // FETCH LEADS FILTERED BY PIPELINE
+    // This fixes the issue of missing leads due to pagination limits on the broad query
+    const { leads, isLoading: leadsLoading, updateLeadAsync, createLeadAsync, isUpdating, isCreating } = useLeads({
+        pipeline_id: selectedPipelineId
+    });
+
     const { automations, logAutomationExecution } = usePipelineAutomations(selectedPipelineId);
     const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -68,13 +77,34 @@ export default function PipelinePage() {
     const leadsByStage = useMemo(() => {
         if (!leads || !selectedPipeline) return {};
 
-        return stages.reduce((acc, stage) => {
-            acc[stage.id] = leads.filter(lead =>
-                lead.pipeline_id === selectedPipelineId &&
-                lead.etapa_id === stage.id
-            );
+        // DEBUG: Log leads info to help debug missing items
+        console.group('DEBUG PIPELINE LEADS');
+        console.log(`Total leads fetched for pipeline ${selectedPipelineId}:`, leads.length);
+        console.log('Stages available:', stages.map(s => `${s.id} (${s.nome})`));
+
+        const distribution = stages.reduce((acc, stage) => {
+            const leadsInStage = leads.filter(lead => {
+                const match = lead.pipeline_id === selectedPipelineId && lead.etapa_id === stage.id;
+                return match;
+            });
+            acc[stage.id] = leadsInStage;
+            console.log(`Stage ${stage.nome} (${stage.id}) has ${leadsInStage.length} leads`);
             return acc;
         }, {} as Record<number, Lead[]>);
+
+        // Find leads that didn't fit into any stage (orphaned)
+        const stageIds = new Set(stages.map(s => s.id));
+        const orphanedLeads = leads.filter(l =>
+            l.pipeline_id === selectedPipelineId && !stageIds.has(l.etapa_id)
+        );
+
+        if (orphanedLeads.length > 0) {
+            console.warn('Orphaned leads (invalid stage_id):', orphanedLeads);
+        }
+
+        console.groupEnd();
+
+        return distribution;
     }, [leads, stages, selectedPipeline, selectedPipelineId]);
 
     const handleDragStart = (event: DragStartEvent) => {
