@@ -1,0 +1,21 @@
+# 1. Fazer suas alterações no código
+# ...desenvolvimento...
+
+# 2. Quando estiver pronto para release:
+# 2.1. Parar o servidor (Ctrl+C)
+
+# 2.2. Atualizar a versão
+npm run release:patch  # ou minor, ou major
+
+# 2.3. Atualizar o CHANGELOG.md
+# Documente as mudanças
+
+# 2.4. Reiniciar o servidor para testar
+npm run dev
+
+# 2.5. Verificar a versão no navegador
+# Abrir http://localhost:8080 e conferir o rodapé
+
+# 2.6. Enviar para o repositório
+git push
+git push --tags
