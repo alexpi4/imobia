@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useCadastro } from '@/hooks/useCadastros';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,15 +10,53 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 export default function DistribuicaoLeadPage() {
-    const { data: leads, loading, refetch } = useCadastro<Lead>('leads', '*');
-    const [distributing, setDistributing] = useState<number | null>(null);
+    // Replace generic hook with specific fetch to assume correctness and avoid limits on old data
+    const [leads, setLeads] = useState<Lead[]>([]);
+    const [loading, setLoading] = useState(true);
 
+    const fetchLeads = async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+            .from('leads')
+            .select('*')
+            .eq('atribuido', false)
+            .order('id', { ascending: false });
+
+        if (error) {
+            toast.error('Erro ao carregar leads: ' + error.message);
+        } else {
+            setLeads(data as unknown as Lead[]);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchLeads();
+
+        // Subscribe to realtime changes for leads
+        const channel = supabase
+            .channel('leads-distribuicao')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'leads', filter: 'atribuido=eq.false' },
+                () => fetchLeads()
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
+
+    // No need to sort client side if API does it, but keeping variable name for compatibility
+    const unassignedLeads = leads;
+    const refetch = fetchLeads;
+
+    const [distributing, setDistributing] = useState<number | null>(null);
     // Dialog State
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
     const [selectedLeadId, setSelectedLeadId] = useState<number | null>(null);
     const [currentDateTime, setCurrentDateTime] = useState<{ date: string, time: string } | null>(null);
-
-    const unassignedLeads = leads.filter(l => !l.atribuido);
 
     const handleDistributeClick = (leadId: number) => {
         const now = new Date();
@@ -114,6 +151,7 @@ export default function DistribuicaoLeadPage() {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead className="w-[80px]">ID</TableHead>
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Origem</TableHead>
                                 <TableHead>Data</TableHead>
@@ -123,15 +161,16 @@ export default function DistribuicaoLeadPage() {
                         <TableBody>
                             {loading ? (
                                 <TableRow>
-                                    <TableCell colSpan={4} className="text-center">Carregando...</TableCell>
+                                    <TableCell colSpan={5} className="text-center">Carregando...</TableCell>
                                 </TableRow>
                             ) : unassignedLeads.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={4} className="text-center">Nenhum lead pendente.</TableCell>
+                                    <TableCell colSpan={5} className="text-center">Nenhum lead pendente.</TableCell>
                                 </TableRow>
                             ) : (
                                 unassignedLeads.map(lead => (
                                     <TableRow key={lead.id}>
+                                        <TableCell className="font-medium">{lead.id}</TableCell>
                                         <TableCell>{lead.nome}</TableCell>
                                         <TableCell>{lead.origem}</TableCell>
                                         <TableCell>{new Date(lead.created_at).toLocaleDateString()}</TableCell>

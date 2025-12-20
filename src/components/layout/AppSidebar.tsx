@@ -42,7 +42,8 @@ import {
     ShoppingCart,
     MessageCircle,
     Send,
-    Database
+    Database,
+    Info
 } from 'lucide-react';
 import {
     Sidebar,
@@ -450,6 +451,25 @@ export function AppSidebar() {
                             <LogOut className="h-4 w-4" />
                             {!collapsed && <span>Sair do Sistema</span>}
                         </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <div className="px-3 py-2 text-xs text-muted-foreground border-t border-border mt-2 pt-2">
+                            {collapsed ? (
+                                <div className="flex justify-center">
+                                    <Info className="h-3 w-3" />
+                                </div>
+                            ) : (
+                                <div className="space-y-0.5">
+                                    <div className="flex items-center gap-1.5">
+                                        <Info className="h-3 w-3" />
+                                        <span className="font-medium">v{__APP_VERSION__}</span>
+                                    </div>
+                                    <div className="text-[10px] text-muted-foreground/70">
+                                        Build: {__BUILD_DATE__}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarGroup>
